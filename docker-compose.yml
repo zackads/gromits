@@ -10,4 +10,4 @@ services:
       - mongodb
     volumes:
       - ./db:/seed-data
-    command: 'bash -c "mongoimport --host mongodb --type json --mode upsert --file /seed-data/test_buildings.json"'
+    command: 'bash -c "mongoimport --host mongodb --type json --mode upsert --file /seed-data/test_buildings.json --collection buildings"'
