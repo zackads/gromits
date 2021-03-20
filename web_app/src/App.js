@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 
-const SERVICE = 'http://localhost:8875/buildings';
+const CENTRE = '@51.4663,-2.6012';
+const SERVICE = 'http://localhost:8875/buildings/' + CENTRE;
 
 function App() {
   const [buildings, setBuildings] = useState([]);
@@ -18,27 +19,30 @@ function App() {
       .catch((error) => {
         console.log(error);
       });
-  });
+  }, []);
 
   return (
     <div id='mapid'>
       {isLoading && <p>Loading buildings...</p>}
-      <MapContainer center={[51.505, -0.09]} zoom={13} scrollWheelZoom={false}>
+      <MapContainer
+        center={[51.4663, -2.6012]}
+        zoom={13}
+        scrollWheelZoom={false}
+      >
         <TileLayer
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
         />
-        {buildings.slice(0, 10).map((building, index) => {
+        {buildings.map((building, index) => {
           return (
-            <Marker
-              key={index}
-              position={building.geometry.coordinates.reverse()}
-            >
-              A pretty CSS3 popup. <br /> Easily customizable.
+            <Marker key={index} position={building.geometry.coordinates}>
+              <Popup>
+                A pretty CSS3 popup. <br /> Easily customizable.
+              </Popup>
             </Marker>
           );
         })}
-        <Marker position={[51.505, -0.09]}>
+        <Marker position={[51.46283, -2.59553]}>
           <Popup>
             A pretty CSS3 popup. <br /> Easily customizable.
           </Popup>
