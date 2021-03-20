@@ -1,24 +1,9 @@
 services:
-  mongodb:
-    image: mongo:4.4
-    ports:
-      - '27017:27017'
-
-  mongo-seed:
-    image: mongo:4.4
-    links:
-      - mongodb
-    volumes:
-      - ./db:/seed-data
-    command: 'bash -c "mongoimport --host mongodb --type json --mode upsert --file /seed-data/test_buildings.json --collection buildings"'
-
   buildings:
     build:
       target: dev
     volumes:
       - ./buildings_service/src:/app/src
-    ports:
-      - '8875:8875'
 
   web_app:
     build:

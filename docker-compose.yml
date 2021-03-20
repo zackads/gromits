@@ -2,23 +2,31 @@ services:
   mongodb:
     image: mongo:4.4
     ports:
-      - '27017:27017'
+      - '${DB_PORT}:${DB_PORT}'
 
   mongo-seed:
+    environment:
+      - DB_HOSTNAME
     image: mongo:4.4
     depends_on:
       - mongodb
     volumes:
       - ./db:/seed-data
-    command: 'bash -c "mongoimport --host mongodb --type json --mode upsert --file /seed-data/test_buildings.json --collection buildings"'
+    command: 'bash -c "mongoimport --host $DB_HOSTNAME --type json --mode upsert --file /seed-data/test_buildings.json --collection buildings"'
 
   buildings:
     build: ./buildings_service
+    environment:
+      - DB_HOSTNAME
     depends_on:
       - mongodb
+    ports:
+      - '${BUILDINGS_PORT}:${BUILDINGS_PORT}'
 
   web_app:
     build: ./web_app
+    environment:
+      - BUILDINGS_HOSTNAME
     depends_on:
       - buildings
     ports:
