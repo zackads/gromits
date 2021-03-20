@@ -1,6 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import { Building } from './models/building';
+import { parseLocationParameter } from './utils';
 
 const cors = require('cors');
 
@@ -20,14 +21,14 @@ app.listen(SERVICE_PORT, () => {
   console.log(`Listening at port ${SERVICE_PORT}...`);
 });
 
-app.get('/buildings', cors(), (req, res) => {
+app.get('/buildings/:location', cors(), (req, res) => {
   return Building.find({
     geometry: {
       $near: {
         $maxDistance: 1000,
         $geometry: {
           type: 'Point',
-          coordinates: [-2.6012, 51.4663],
+          coordinates: parseLocationParameter(req.params.location).reverse(),
         },
       },
     },
