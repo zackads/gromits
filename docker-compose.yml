@@ -26,7 +26,7 @@ services:
   web_app:
     build: ./web_app
     environment:
-      - BUILDINGS_HOSTNAME
+      - BUILDINGS_PORT
     depends_on:
       - buildings
     ports:
