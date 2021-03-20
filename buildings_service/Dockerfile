@@ -4,12 +4,11 @@ WORKDIR /app
 COPY ["package.json", "package-lock.json*", "./"]
 RUN npm install
 COPY . .
-CMD [ "npm",  "dev" ]
+CMD [ "npm", "run", "dev" ]
 
 # Production
-FROM node:14 as prod
+FROM node:14 AS prod
 ENV NODE_ENV=production
-RUN npm install -g serve
 COPY --from=dev /app app
 WORKDIR /app
 RUN npm test

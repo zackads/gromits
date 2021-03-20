@@ -16,12 +16,10 @@ services:
     build: ./buildings_service
     depends_on:
       - mongodb
-    command: npm start
 
   web_app:
     build: ./web_app
     depends_on:
       - buildings
-    command: 'npm start'
     ports:
       - '80:80'

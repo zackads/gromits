@@ -16,12 +16,15 @@ services:
     build:
       target: dev
     volumes:
-      - ./web_app/src:/app/src
-      - ./web_app/public:/app/public
-    command: npm dev
+      - ./buildings_service/src:/app/src
+    ports:
+      - '8875:8875'
 
   web_app:
-    build: ./web_app
-    command: 'npm start'
+    build:
+      target: dev
+    volumes:
+      - ./web_app/src:/app/src
+      - ./web_app/public:/app/public
     ports:
-      - '80:80'
+      - '3000:3000'
