@@ -6,22 +6,22 @@ services:
 
   mongo-seed:
     image: mongo:4.4
-    depends_on:
+    links:
       - mongodb
     volumes:
       - ./db:/seed-data
     command: 'bash -c "mongoimport --host mongodb --type json --mode upsert --file /seed-data/test_buildings.json --collection buildings"'
 
   buildings:
-    build: ./buildings_service
-    depends_on:
-      - mongodb
-    command: npm start
+    build:
+      target: dev
+    volumes:
+      - ./web_app/src:/app/src
+      - ./web_app/public:/app/public
+    command: npm dev
 
   web_app:
     build: ./web_app
-    depends_on:
-      - buildings
     command: 'npm start'
     ports:
       - '80:80'
