@@ -1,0 +1,2 @@
+*.geojson filter=lfs diff=lfs merge=lfs -text
+test_buildings.json filter=lfs diff=lfs merge=lfs -text
