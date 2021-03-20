@@ -1,7 +1,19 @@
-import { Schema, model } from "mongoose";
+import { Schema, model } from 'mongoose';
 
-const buildingSchema = Schema({
-  name: String,
+const BuildingSchema = new Schema({
+  properties: {
+    Name: String,
+    Location: String,
+    Grade: String,
+    Hyperlink: String,
+    ListEntry: Number,
+    Hyperlink: String,
+  },
+  geometry: {
+    coordinates: [Number, Number],
+  },
 });
 
-export const Building = model("Building", buildingSchema);
+BuildingSchema.index({ geometry: '2dsphere' });
+
+export const Building = model('Building', BuildingSchema, 'buildings');

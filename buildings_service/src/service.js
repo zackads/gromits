@@ -21,5 +21,17 @@ app.listen(SERVICE_PORT, () => {
 });
 
 app.get('/buildings', cors(), (req, res) => {
-  return Building.find((err, buildings) => res.send({ points: buildings }));
+  return Building.find({
+    geometry: {
+      $near: {
+        $maxDistance: 1000,
+        $geometry: {
+          type: 'Point',
+          coordinates: [-2.6012, 51.4663],
+        },
+      },
+    },
+  }).find((err, buildings) => res.send({ points: buildings }));
+
+  return Building.findOne((err, buildings) => res.send({ points: buildings }));
 });
