@@ -15,3 +15,9 @@ services:
   buildings:
     build: ./buildings_service
     command: npm start
+
+  web_app:
+    build: ./web_app
+    command: 'npm start'
+    ports:
+      - '80:80'
