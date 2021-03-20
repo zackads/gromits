@@ -17,7 +17,7 @@ class App extends Component {
   }
 
   render() {
-    return <Map buildings={this.state.buildings} />;
+    return <Map buildings={this.state.buildings} center={[51.4663, -2.6012]} />;
   }
 }
 

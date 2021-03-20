@@ -3,8 +3,8 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 
 export default class Map extends Component {
   state = {
-    center: [51.4663, -2.6012],
-    zoom: 13,
+    center: this.props.center,
+    zoom: 16,
   };
   render() {
     return this.props.buildings ? (
