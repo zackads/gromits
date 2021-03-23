@@ -1,0 +1,21 @@
+name: CI/CD pipeline
+on: push
+
+jobs:
+  build_service:
+    name: Build the Service image and push to ECR
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build, tag, and push image to Amazon ECR
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: gromits
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./buildings_service
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
