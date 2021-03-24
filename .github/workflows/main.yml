@@ -38,7 +38,7 @@ jobs:
           docker build -t public.ecr.aws/t1m1t5z8/gromits:${{ github.sha }}-web_app ./web_app
           docker push public.ecr.aws/t1m1t5z8/gromits:${{ github.sha }}-web_app
 
-  build_webapp:
+  build_db:
     name: Build the Buildings DB image and push to ECR
     runs-on: ubuntu-latest
 
