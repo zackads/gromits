@@ -19,6 +19,6 @@ jobs:
           docker build -t ${{ secrets.AWS_ECR_REGISTRY }}/${{ secrets.AWS_ECR_REPOSITORY }}:${{ github.sha }}-service ./buildings_service
           docker push ${{ secrets.AWS_ECR_REGISTRY }}/${{ secrets.AWS_ECR_REPOSITORY }}:${{ github.sha }}-service
 
-  build_webapp:
-    name: Build the web application image and push to ECR
-    runs-on: ubuntu-latest
+  # build_webapp:
+  #   name: Build the web application image and push to ECR
+  #   runs-on: ubuntu-latest
