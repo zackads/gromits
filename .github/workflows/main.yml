@@ -11,27 +11,10 @@ jobs:
       - name: Login to ECR
         uses: docker/login-action@v1
         with:
-          registry: ${{ secrets.AWS_ECR_REGISTRY }}
+          registry: public.ecr.aws/t1m1t5z8
           username: ${{ secrets.AWS_ACCESS_KEY_ID }}
           password: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - name: Build, tag, and push image to ECR
         run: |
-          docker build -t ${{ secrets.AWS_ECR_REGISTRY }}/${{ secrets.AWS_ECR_REPOSITORY }}:${{ github.sha }}-service ./buildings_service
-          docker push ${{ secrets.AWS_ECR_REGISTRY }}/${{ secrets.AWS_ECR_REPOSITORY }}:${{ github.sha }}-service
-
-  build_webapp:
-    name: Build the web application image and push to ECR
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-      - name: Login to ECR
-        uses: docker/login-action@v1
-        with:
-          registry: ${{ secrets.AWS_ECR_REGISTRY }}
-          username: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          password: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      - name: Build, tag, and push image to ECR
-        run: |
-          docker build -t ${{ secrets.AWS_ECR_REGISTRY }}/${{ secrets.AWS_ECR_REPOSITORY }}:${{ github.sha }}-web_app ./web_app
-          docker push ${{ secrets.AWS_ECR_REGISTRY }}/${{ secrets.AWS_ECR_REPOSITORY }}:${{ github.sha }}-web_app
+          docker build -t public.ecr.aws/t1m1t5z8/gromits:${{ github.sha }}-service ./buildings_service
+          docker push public.ecr.aws/t1m1t5z8/gromits:${{ github.sha }}-service
