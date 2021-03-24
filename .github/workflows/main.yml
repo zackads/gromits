@@ -23,7 +23,7 @@ jobs:
 
       - name: Build, tag, and push image to Amazon ECR
         env:
-          ECR_REGISTRY: ecr-public
+          ECR_REGISTRY: public.ecr.aws/t1m1t5z8
           ECR_REPOSITORY: gromits
           IMAGE_TAG: ${{ github.sha }}
         run: |
