@@ -3,6 +3,7 @@ on:
   push:
     branches: [main]
 
+jobs:
   build_service:
     name: Build the Service image and push to ECR
     runs-on: ubuntu-latest
