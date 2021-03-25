@@ -19,7 +19,14 @@ export default class Map extends Component {
         />
         {this.props.buildings.map((building, i) => {
           const [lat, long] = building.geometry.coordinates.reverse();
-          return <Marker position={[lat, long]} key={i}></Marker>;
+          return (
+            <Marker position={[lat, long]} key={i}>
+              <Popup>
+                <h1>{building.properties.Name}</h1>
+                <p>{building.properties.Grade}</p>
+              </Popup>
+            </Marker>
+          );
         })}
         <Marker position={[51.4573, -2.59882]}></Marker>
       </MapContainer>
