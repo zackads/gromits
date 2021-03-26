@@ -18,7 +18,7 @@ jobs:
           password: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - name: Build, tag, and push image to ECR
         run: |
-          docker build -t public.ecr.aws/t1m1t5z8/gromits:service ./buildings_service
+          docker build -t public.ecr.aws/t1m1t5z8/gromits:service --target prod ./buildings_service
           docker push public.ecr.aws/t1m1t5z8/gromits:service
 
   build_webapp:
@@ -35,7 +35,7 @@ jobs:
           password: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - name: Build, tag, and push image to ECR
         run: |
-          docker build -t public.ecr.aws/t1m1t5z8/gromits:web_app ./web_app
+          docker build -t public.ecr.aws/t1m1t5z8/gromits:web_app --target prod ./web_app
           docker push public.ecr.aws/t1m1t5z8/gromits:web_app
 
   deploy:

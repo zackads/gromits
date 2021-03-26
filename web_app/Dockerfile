@@ -12,5 +12,4 @@ ENV NODE_ENV=production
 RUN npm install -g serve
 COPY --from=dev /app app
 WORKDIR /app
-RUN npm test
 CMD [ "npm", "start"]
