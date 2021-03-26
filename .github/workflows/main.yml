@@ -18,8 +18,8 @@ jobs:
           password: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - name: Build, tag, and push image to ECR
         run: |
-          docker build -t public.ecr.aws/t1m1t5z8/gromits:${{ github.sha }}-service ./buildings_service
-          docker push public.ecr.aws/t1m1t5z8/gromits:${{ github.sha }}-service
+          docker build -t public.ecr.aws/t1m1t5z8/gromits-service ./buildings_service
+          docker push public.ecr.aws/t1m1t5z8/gromits-service
 
   build_webapp:
     name: Build the Web app image and push to ECR
@@ -35,22 +35,17 @@ jobs:
           password: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - name: Build, tag, and push image to ECR
         run: |
-          docker build -t public.ecr.aws/t1m1t5z8/gromits:${{ github.sha }}-web_app ./web_app
-          docker push public.ecr.aws/t1m1t5z8/gromits:${{ github.sha }}-web_app
+          docker build -t public.ecr.aws/t1m1t5z8/gromits-web_app ./web_app
+          docker push public.ecr.aws/t1m1t5z8/gromits-web_app
 
-  build_db:
-    name: Build the Buildings DB image and push to ECR
+  deploy:
+    name: Deploy to ECS Fargate
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
-      - name: Login to Public ECR
-        uses: docker/login-action@v1
-        with:
-          registry: public.ecr.aws
-          username: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          password: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      - name: Build, tag, and push image to ECR
-        run: |
-          docker build -t public.ecr.aws/t1m1t5z8/gromits:${{ github.sha }}-web_app ./db
-          docker push public.ecr.aws/t1m1t5z8/gromits:${{ github.sha }}-db
+      - name: Create ECS Docker context
+        run: docker context create ecs gromits --from-env |
+          docker context use gromits
+      - name: Bring up cluster
+        run: docker compose -f docker-compose.yml -f docker-compose.prod.yml up
