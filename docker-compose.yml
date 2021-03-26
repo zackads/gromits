@@ -15,24 +15,15 @@ services:
     command: 'bash -c "mongoimport --host $DB_HOSTNAME --type json --mode upsert --file /seed-data/listed_buildings.geojson --collection buildings"'
 
   buildings:
-    image: public.ecr.aws/t1m1t5z8/gromits-service
     environment:
       - DB_HOSTNAME
     depends_on:
       - mongodb
     ports:
       - '${BUILDINGS_PORT}:${BUILDINGS_PORT}'
-    volumes:
-      - ./buildings_service/src:/app/src
 
   web_app:
-    image: public.ecr.aws/t1m1t5z8/gromits-web_app
     environment:
       - BUILDINGS_PORT
     depends_on:
       - buildings
-    ports:
-      - '80:80'
-    volumes:
-      - ./web_app/src:/app/src
-      - ./web_app/public:/app/public

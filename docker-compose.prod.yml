@@ -1,0 +1,8 @@
+services:
+  web_app:
+    image: public.ecr.aws/t1m1t5z8/gromits-web_app
+    ports:
+      - '80:80'
+
+  buildings:
+    image: public.ecr.aws/t1m1t5z8/gromits-service

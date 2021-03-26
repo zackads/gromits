@@ -3,6 +3,8 @@ services:
     build:
       context: ./buildings_service
       target: dev
+    volumes:
+      - ./buildings_service/src:/app/src
 
   web_app:
     build:
@@ -10,3 +12,6 @@ services:
       target: dev
     ports:
       - '3000:3000'
+    volumes:
+      - ./web_app/src:/app/src
+      - ./web_app/public:/app/public
