@@ -1,0 +1,12 @@
+services:
+  buildings:
+    build:
+      context: ./buildings_service
+      target: dev
+
+  web_app:
+    build:
+      context: ./web_app
+      target: dev
+    ports:
+      - '3000:3000'
