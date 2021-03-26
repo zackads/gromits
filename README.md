@@ -1,8 +1,6 @@
 # Gromits
 
-## To dev environment
+## To start the dev environment
 
-1.  `docker-compose up`
-2.  `cd buildings_service && npm run dev`
-
-THIS MUST BE ONE COMMAND
+1.  Make sure you have [Docker Desktop](https://docs.docker.com/get-docker/) installed and running.
+2.  Run the shell script `./start_dev_environment.sh`
