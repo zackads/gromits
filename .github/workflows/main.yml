@@ -18,7 +18,7 @@ jobs:
           password: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - name: Build, tag, and push image to ECR
         run: |
-          docker build -t public.ecr.aws/t1m1t5z8/gromits:service --target prod ./buildings_service
+          docker build --target prod -t public.ecr.aws/t1m1t5z8/gromits:service ./buildings_service
           docker push public.ecr.aws/t1m1t5z8/gromits:service
 
   build_webapp:
@@ -35,12 +35,13 @@ jobs:
           password: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - name: Build, tag, and push image to ECR
         run: |
-          docker build -t public.ecr.aws/t1m1t5z8/gromits:web_app --target prod ./web_app
+          docker build --target prod -t public.ecr.aws/t1m1t5z8/gromits:web_app --target prod ./web_app
           docker push public.ecr.aws/t1m1t5z8/gromits:web_app
 
   deploy:
     name: Deploy to ECS Fargate
     runs-on: ubuntu-latest
+    needs: [build_service, build_webapp]
 
     steps:
       - uses: actions/checkout@v2
