@@ -11,7 +11,6 @@ env:
   ECS_SERVICE: gromits-service
   ECS_CLUSTER: gromits
   ECS_TASK_DEFINITION: .aws/task-definition.json
-
   WEB_APP_CONTAINER_NAME: gromits-webapp
   POI_API_CONTAINER_NAME: gromits-api
 
