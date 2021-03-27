@@ -56,7 +56,7 @@ jobs:
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
           task-definition: ${{ env.ECS_TASK_DEFINITION }}
-          container-name: ${{ env. POI_API_CONTAINER_NAME }}
+          container-name: ${{ env.POI_API_CONTAINER_NAME }}
           image: ${{ steps.build-image.outputs.image }}
 
   build_webapp:
@@ -105,6 +105,7 @@ jobs:
     needs: [build_service, build_webapp]
 
     steps:
+      - name: Deploy
       - uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
