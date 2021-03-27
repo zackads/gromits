@@ -1,4 +1,4 @@
-name: Deploy POI service to Amazon ECS
+name: POI service pipeline
 
 on:
   push:
@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'poi_service/**'
+  workflow_dispatch:
 
 env:
   ECR_REGISTRY: public.ecr.aws/t1m1t5z8

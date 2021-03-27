@@ -1,4 +1,4 @@
-name: Deploy web app to Amazon ECS
+name: Web app pipeline
 
 on:
   push:
@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'web_app/**'
+  workflow_dispatch:
 
 env:
   ECR_REGISTRY: public.ecr.aws/t1m1t5z8
