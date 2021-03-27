@@ -1,28 +1,26 @@
-name: Web app pipeline
+name: Deployment pipeline
 
 on:
   push:
     branches:
       - main
-    paths:
-      - 'web_app/**'
   workflow_dispatch:
 
 env:
   ECR_REGISTRY: public.ecr.aws/t1m1t5z8
-  ECR_REPOSITORY: gromits-webapp
   ECS_SERVICE: gromits-service
   ECS_CLUSTER: gromits
   ECS_TASK_DEFINITION: .aws/task-definition.json
-  CONTAINER_NAME: gromits-webapp
+  POI_CONTAINER_NAME: gromits-poi_service
+  WEBAPP_CONTAINER_NAME: gromits-webapp
 
 defaults:
   run:
     shell: bash
 
 jobs:
-  deploy:
-    name: Deploy
+  build_images:
+    name: Build and push images
     runs-on: ubuntu-latest
 
     steps:
@@ -47,16 +45,25 @@ jobs:
         with:
           context: ./web_app
           push: true
-          tags: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
+          tags: ${{ env.ECR_REGISTRY }}/${{ env.WEBAPP_CONTAINER_NAME }}:${{ github.sha }}
           target: prod
 
-      - name: Fill in the new image ID in the Amazon ECS task definition
-        id: task-def
-        uses: aws-actions/amazon-ecs-render-task-definition@v1
+      - name: Build, tag, and push POI service image to Amazon ECR
+        id: build-image
+        uses: docker/build-push-action@v2
         with:
-          task-definition: ${{ env.ECS_TASK_DEFINITION }}
-          container-name: ${{ env.CONTAINER_NAME }}
-          image: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
+          context: ./poi_service
+          push: true
+          tags: ${{ env.ECR_REGISTRY }}/${{ env.POI_CONTAINER_NAME }}:${{ github.sha }}
+          target: prod
+
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -64,6 +71,22 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-2
+
+      - name: Fill in the web app image ID in the ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: ${{ env.ECS_TASK_DEFINITION }}
+          container-name: ${{ env.WEBAPP_CONTAINER_NAME }}
+          image: ${{ env.ECR_REGISTRY }}/${{ env.WEBAPP_CONTAINER_NAME }}:${{ github.sha }}
+
+      - name: Fill in the POI service image ID in the ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: ${{ env.ECS_TASK_DEFINITION }}
+          container-name: ${{ env.POI_CONTAINER_NAME }}
+          image: ${{ env.ECR_REGISTRY }}/${{ env.POI_CONTAINER_NAME }}:${{ github.sha }}
 
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
