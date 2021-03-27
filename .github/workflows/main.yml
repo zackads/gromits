@@ -71,7 +71,7 @@ jobs:
           aws-region: eu-west-2
 
       - name: Fill in the web app image ID in the ECS task definition
-        id: task-def
+        id: render-web-app-container
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
           task-definition: ${{ env.ECS_TASK_DEFINITION }}
@@ -79,16 +79,16 @@ jobs:
           image: ${{ env.ECR_REGISTRY }}/${{ env.WEBAPP_CONTAINER_NAME }}:${{ github.sha }}
 
       - name: Fill in the POI service image ID in the ECS task definition
-        id: task-def
+        id: render-poi-service-container
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          task-definition: ${{ env.ECS_TASK_DEFINITION }}
+          task-definition: ${{ steps.render-web-app-container.outputs.task-definition }}
           container-name: ${{ env.POI_CONTAINER_NAME }}
           image: ${{ env.ECR_REGISTRY }}/${{ env.POI_CONTAINER_NAME }}:${{ github.sha }}
 
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
-          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          task-definition: ${{ steps.render-poir-service-container.outputs.task-definition }}
           service: ${{ env.ECS_SERVICE }}
           cluster: ${{ env.ECS_CLUSTER }}
