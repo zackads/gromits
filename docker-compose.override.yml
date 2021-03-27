@@ -1,10 +1,12 @@
+version: '3.8'
+
 services:
   buildings:
     build:
-      context: ./buildings_service
+      context: ./poi_service
       target: dev
     volumes:
-      - ./buildings_service/src:/app/src
+      - ./poi_service/src:/app/src
 
   web_app:
     build:

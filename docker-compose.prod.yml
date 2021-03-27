@@ -1,8 +1,10 @@
+version: '3.8'
+
 services:
   web_app:
-    image: public.ecr.aws/t1m1t5z8/gromits:web_app
+    image: public.ecr.aws/t1m1t5z8/gromits-webapp:bdd528e0d45a40e42c343413d44b54087c0dcc60
     ports:
       - '80:80'
 
   buildings:
-    image: public.ecr.aws/t1m1t5z8/gromits:service
+    image: public.ecr.aws/t1m1t5z8/gromits-poi_service:bdd528e0d45a40e42c343413d44b54087c0dcc60
