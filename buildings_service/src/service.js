@@ -33,6 +33,4 @@ app.get('/buildings/:location', cors(), (req, res) => {
       },
     },
   }).find((err, buildings) => res.send({ points: buildings }));
-
-  return Building.findOne((err, buildings) => res.send({ points: buildings }));
 });
