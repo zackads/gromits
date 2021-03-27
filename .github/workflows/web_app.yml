@@ -1,9 +1,11 @@
-name: Deploy to Amazon ECS
+name: Deploy web app to Amazon ECS
 
 on:
   push:
     branches:
       - main
+    paths:
+      - 'web_app/**'
 
 env:
   ECR_REGISTRY: public.ecr.aws/t1m1t5z8
