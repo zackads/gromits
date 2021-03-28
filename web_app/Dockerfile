@@ -7,10 +7,5 @@ COPY . .
 CMD ["npm", "run", "dev"]
 
 # Prodution
-FROM node:14 AS prod
-ENV NODE_ENV=production
-WORKDIR /app
-COPY ["package.json", "package-lock.json*", "./"]
-RUN npm install -g serve
-COPY . .
+FROM dev AS prod
 CMD [ "npm", "start"]

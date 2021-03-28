@@ -20,7 +20,7 @@
     "dev": "react-scripts start",
     "test": "react-scripts test",
     "build": "react-scripts build",
-    "start": "npm run build && npx serve -s build -l 80"
+    "start": "npm run build && npx serve -s build -l 4000"
   },
   "eslintConfig": {
     "extends": [
