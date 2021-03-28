@@ -1,4 +1,4 @@
-resource "aws_cloudwatch_log_group" "gromits" {
+resource "aws_cloudwatch_log_group" "log_group" {
     name = "awslogs-gromits-staging"
 
     tags = {

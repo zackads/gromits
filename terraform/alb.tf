@@ -10,18 +10,18 @@ resource "aws_lb" "staging" {
     }
 }
 
-resource "aws_lb_listener" "front_end" {
+resource "aws_alb_listener" "front_end" {
     load_balancer_arn = aws_lb.staging.arn
     port = 80
     protocol = "HTTP"
 
-    default action {
+    default_action {
         type = "forward"
-        target_group_arm = aws_lb_target_group.staging.arn
+        target_group_arn = aws_alb_target_group.webapp.arn
     }
 }
 
-resource "aws_lb_target_group" "webapp" {
+resource "aws_alb_target_group" "webapp" {
     name = "gromits-webapp-alb-tg"
     port = 80
     protocol = "HTTP"

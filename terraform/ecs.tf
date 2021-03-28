@@ -1,7 +1,3 @@
-data "aws_ecr_repository" "webapp" {
-  name = var.webapp_image
-}
-
 resource "aws_ecs_cluster" "main" {
   name = "${var.env}-gromits-cluster"
 }
@@ -15,7 +11,7 @@ resource "aws_ecs_task_definition" "webapp" {
   memory                   = var.webapp_fargate_memory
   container_definitions = jsonencode([{
     name : "gromits-webapp",
-    image : "${data.aws_ecr_repository.webapp.repository_url}:${var.webapp_image_tag}",
+    image : "${var.container_registry}/${var.webapp_container_repo}:${var.webapp_image_tag}",
     portMappings : [
       {
         containerPort : var.webapp_port
