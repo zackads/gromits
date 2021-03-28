@@ -17,14 +17,27 @@ services:
     command: 'bash -c "mongoimport --host $DB_HOSTNAME --type json --mode upsert --file /seed-data/listed_buildings.geojson --collection buildings"'
 
   buildings:
-    environment:
-      - DB_HOSTNAME
+    build:
+      context: ./poi_service
+      target: dev
+    volumes:
+      - ./poi_service/src:/app/src
     depends_on:
       - mongodb
+    environment:
+      - DB_HOSTNAME
     ports:
       - '${BUILDINGS_PORT}:${BUILDINGS_PORT}'
 
   web_app:
+    build:
+      context: ./web_app
+      target: dev
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./web_app/src:/app/src
+      - ./web_app/public:/app/public
     environment:
       - BUILDINGS_PORT
     depends_on:
