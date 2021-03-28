@@ -11,5 +11,4 @@ FROM node:14 AS prod
 ENV NODE_ENV=production
 COPY --from=dev /app app
 WORKDIR /app
-RUN npm test
 CMD [ "npm", "start"]
