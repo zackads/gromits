@@ -47,49 +47,41 @@ jobs:
           tags: ${{ env.ECR_REGISTRY }}/${{ env.WEBAPP_CONTAINER_NAME }}:${{ github.sha }}
           target: prod
 
-      - name: Build, tag, and push POI service image to Amazon ECR
-        uses: docker/build-push-action@v2
-        with:
-          context: ./poi_service
-          push: true
-          tags: ${{ env.ECR_REGISTRY }}/${{ env.POI_CONTAINER_NAME }}:${{ github.sha }}
-          target: prod
+  # deploy:
+  #   name: Deploy
+  #   runs-on: ubuntu-latest
+  #   needs: [build_images]
 
-  deploy:
-    name: Deploy
-    runs-on: ubuntu-latest
-    needs: [build_images]
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v2
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+  #     - name: Configure AWS Credentials
+  #       uses: aws-actions/configure-aws-credentials@v1
+  #       with:
+  #         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #         aws-region: eu-west-2
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-west-2
+  #     - name: Fill in the web app image ID in the ECS task definition
+  #       id: render-web-app-container
+  #       uses: aws-actions/amazon-ecs-render-task-definition@v1
+  #       with:
+  #         task-definition: ${{ env.ECS_TASK_DEFINITION }}
+  #         container-name: ${{ env.WEBAPP_CONTAINER_NAME }}
+  #         image: ${{ env.ECR_REGISTRY }}/${{ env.WEBAPP_CONTAINER_NAME }}:${{ github.sha }}
 
-      - name: Fill in the web app image ID in the ECS task definition
-        id: render-web-app-container
-        uses: aws-actions/amazon-ecs-render-task-definition@v1
-        with:
-          task-definition: ${{ env.ECS_TASK_DEFINITION }}
-          container-name: ${{ env.WEBAPP_CONTAINER_NAME }}
-          image: ${{ env.ECR_REGISTRY }}/${{ env.WEBAPP_CONTAINER_NAME }}:${{ github.sha }}
+  #     - name: Fill in the POI service image ID in the ECS task definition
+  #       id: render-poi-service-container
+  #       uses: aws-actions/amazon-ecs-render-task-definition@v1
+  #       with:
+  #         task-definition: ${{ steps.render-web-app-container.outputs.task-definition }}
+  #         container-name: ${{ env.POI_CONTAINER_NAME }}
+  #         image: ${{ env.ECR_REGISTRY }}/${{ env.POI_CONTAINER_NAME }}:${{ github.sha }}
 
-      - name: Fill in the POI service image ID in the ECS task definition
-        id: render-poi-service-container
-        uses: aws-actions/amazon-ecs-render-task-definition@v1
-        with:
-          task-definition: ${{ steps.render-web-app-container.outputs.task-definition }}
-          container-name: ${{ env.POI_CONTAINER_NAME }}
-          image: ${{ env.ECR_REGISTRY }}/${{ env.POI_CONTAINER_NAME }}:${{ github.sha }}
-
-      - name: Deploy Amazon ECS task definition
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-        with:
-          task-definition: ${{ steps.render-poi-service-container.outputs.task-definition }}
-          service: ${{ env.ECS_SERVICE }}
-          cluster: ${{ env.ECS_CLUSTER }}
+  #     - name: Deploy Amazon ECS task definition
+  #       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+  #       with:
+  #         task-definition: ${{ steps.render-poi-service-container.outputs.task-definition }}
+  #         service: ${{ env.ECS_SERVICE }}
+  #         cluster: ${{ env.ECS_CLUSTER }}
