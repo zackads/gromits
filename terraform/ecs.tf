@@ -35,8 +35,4 @@ resource "aws_ecs_service" "webapp" {
     subnets          = aws_subnet.public.*.id
     assign_public_ip = true
   }
-
-  # lifecycle {
-  #   ignore_changes = [task_definition, desired_count]
-  # }
 }

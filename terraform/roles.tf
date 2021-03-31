@@ -1,3 +1,10 @@
+###### 
+# Create an IAM role with necessary permissions to do ECS tasks, such as pull 
+# an image from ECR.  
+#
+# See https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_execution_IAM_role.html
+######
+
 resource "aws_iam_role" "ecs_task_execution_role" {
   name = "${var.name}-ecsTaskExecutionRole"
  
