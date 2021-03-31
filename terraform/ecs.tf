@@ -1,52 +1,42 @@
 resource "aws_ecs_cluster" "main" {
-  name = "${var.env}-gromits-cluster"
+  name = "${var.name}-cluster-${var.env}"
 }
 
 resource "aws_ecs_task_definition" "webapp" {
-  family                   = "${var.env}-gromits-task"
-  execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
+  family = "gromits-webapp"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
-  cpu                      = var.webapp_fargate_cpu
-  memory                   = var.webapp_fargate_memory
+  cpu                      = 256
+  memory                   = 512
+  execution_role_arn            = aws_iam_role.ecs_task_execution_role.arn
   container_definitions = jsonencode([{
-    name : "gromits-webapp",
-    image : "${var.container_registry}/${var.webapp_container_repo}:${var.webapp_image_tag}",
-    portMappings : [
-      {
-        containerPort : var.webapp_port
-        hostPort : var.webapp_port
-      }
-    ],
-    logConfiguration : {
-      "logDriver" : "awslogs",
-      "options" : {
-        "awslogs-group" : aws_cloudwatch_log_group.log_group.name,
-        "awslogs-region" : var.aws_region,
-        "awslogs-stream-prefix" : "webapp"
-      }
-    }
+    name        = "${var.name}-container-${var.env}"
+    image       = "${var.container_registry}/${var.webapp_image}:${var.webapp_image_tag}"
+    essential   = true
+    portMappings = [{
+      protocol      = "tcp"
+      containerPort = var.webapp_port
+      hostPort      = var.webapp_port
+    }]
   }])
 }
 
 resource "aws_ecs_service" "webapp" {
-  name             = "${var.env}-beacons-webapp"
-  cluster          = aws_ecs_cluster.main.id
-  task_definition  = aws_ecs_task_definition.webapp.arn
-  desired_count    = var.webapp_count
-  launch_type      = "FARGATE"
+  name                               = "${var.name}-service-${var.env}"
+  cluster                            = aws_ecs_cluster.main.id
+  task_definition                    = aws_ecs_task_definition.webapp.arn
+  desired_count                      = 2
+  deployment_minimum_healthy_percent = 50
+  deployment_maximum_percent         = 200
+  launch_type                        = "FARGATE"
+  scheduling_strategy                = "REPLICA"
 
   network_configuration {
-    security_groups = [aws_security_group.ecs_tasks.id]
-    subnets         = data.aws_subnet_ids.default.ids
+    subnets          = aws_subnet.public.*.id
     assign_public_ip = true
   }
 
-  load_balancer {
-    target_group_arn = aws_alb_target_group.webapp.id
-    container_name   = "gromits-webapp"
-    container_port   = var.webapp_port
-  }
-
-  depends_on = [aws_alb_listener.front_end, aws_iam_role_policy_attachment.ecs_task_execution_role]
+  # lifecycle {
+  #   ignore_changes = [task_definition, desired_count]
+  # }
 }

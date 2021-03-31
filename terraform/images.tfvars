@@ -1,1 +1,1 @@
-webapp_image_tag = "5c83dd4574a3210cb4146a406093699dd8d21e12"
+webapp_image_tag = "9974d4c035d0c4d8ea516460f276bd01bc545219"
