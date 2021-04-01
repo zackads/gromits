@@ -19,11 +19,6 @@ defaults:
     shell: bash
 
 jobs:
-  login_to_ecr:
-    name: Login to Public ECR
-    runs-on: ubuntu-latest
-    steps:
-
   build_webapp:
     name: Build and push webapp image to ECR
     runs-on: ubuntu-latest
