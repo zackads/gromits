@@ -19,32 +19,31 @@ defaults:
     shell: bash
 
 jobs:
-  build_images:
-    name: Build and push images
+  login_to_ecr:
+    name: Login to Public ECR
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-        with:
-          buildkitd-flags: --debug
-
-      - name: Login to Public ECR
-        uses: docker/login-action@v1
+      - uses: docker/login-action@v1
         with:
           registry: public.ecr.aws
           username: ${{ secrets.AWS_ACCESS_KEY_ID }}
           password: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
+  build_webapp:
+    name: Build and push webapp image to ECR
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+        with:
+          buildkitd-flags: --debug
       - name: Build, tag, and push webapp image to Amazon ECR
         uses: docker/build-push-action@v2
         with:
           context: ./web_app
           push: true
-          tags: ${{ env.ECR_REGISTRY }}/${{ env.WEBAPP_CONTAINER_NAME }}:${{ github.sha }}
+          tags: ${{ env.ECR_REGISTRY }}/${{ env.WEBAPP_CONTAINER_NAME }}:latest
           target: prod
 
   # deploy:
