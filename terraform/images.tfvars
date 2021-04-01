@@ -1,1 +1,1 @@
-webapp_image_tag = "9974d4c035d0c4d8ea516460f276bd01bc545219"
+webapp_image_tag = "latest"
