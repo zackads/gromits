@@ -25,7 +25,7 @@ resource "aws_ecs_service" "webapp" {
   name                               = "${var.name}-service-${var.env}"
   cluster                            = aws_ecs_cluster.main.id
   task_definition                    = aws_ecs_task_definition.webapp.arn
-  desired_count                      = 2
+  desired_count                      = var.webapp_count
   deployment_minimum_healthy_percent = 50
   deployment_maximum_percent         = 200
   launch_type                        = "FARGATE"
@@ -33,6 +33,7 @@ resource "aws_ecs_service" "webapp" {
 
   network_configuration {
     subnets          = aws_subnet.public.*.id
+    security_groups = [aws_security_group.allow_all.id]
     assign_public_ip = true
   }
 }
