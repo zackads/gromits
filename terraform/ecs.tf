@@ -33,7 +33,7 @@ resource "aws_ecs_service" "webapp" {
 
   network_configuration {
     subnets          = aws_subnet.public.*.id
-    security_groups = [aws_security_group.allow_all.id]
+    security_groups = [aws_security_group.allow_http.id]
     assign_public_ip = true
   }
 }
