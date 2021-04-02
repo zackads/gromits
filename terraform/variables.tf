@@ -1,6 +1,6 @@
 variable "name" {
-    type = string
-    description = "The name of the app or service being deployed"
+  type        = string
+  description = "The name of the app or service being deployed"
 }
 
 variable "aws_region" {
@@ -57,4 +57,16 @@ variable "webapp_count" {
 variable "webapp_port" {
   type        = number
   description = "Port exposed by the Webapp container.  Traffic sent here by ALB"
+}
+
+variable "poi_db_user" {
+  type        = string
+  description = "The username for the POI DB"
+  sensitive   = true
+}
+
+variable "poi_db_password" {
+  type        = string
+  description = "The password for the POI DB"
+  sensitive   = true
 }
