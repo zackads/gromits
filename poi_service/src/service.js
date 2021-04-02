@@ -7,7 +7,7 @@ const cors = require('cors');
 
 const app = express();
 const DB_HOSTNAME = process.env.DB_HOSTNAME;
-const SERVICE_PORT = 8875;
+const SERVICE_PORT = 8080;
 
 mongoose.connect(`mongodb://${DB_HOSTNAME}`, {
   useNewUrlParser: true,
