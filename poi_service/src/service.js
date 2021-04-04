@@ -1,36 +1,14 @@
 import express from 'express';
-import mongoose from 'mongoose';
-import { Building } from './models/building';
-import { parseLocationParameter } from './utils';
-
-const cors = require('cors');
+import { router } from './routes';
+import { init } from './db';
 
 const app = express();
-const DB_HOSTNAME = process.env.DB_HOSTNAME;
-const SERVICE_PORT = 8080;
+app.use(router);
 
-mongoose.connect(`mongodb://${DB_HOSTNAME}`, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+const PORT = process.env.PORT || 8080;
 
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'MongoDB connection error: '));
-
-app.listen(SERVICE_PORT, () => {
-  console.log(`Listening at port ${SERVICE_PORT}...`);
-});
-
-app.get('/buildings/:location', cors(), (req, res) => {
-  return Building.find({
-    geometry: {
-      $near: {
-        $maxDistance: 1000,
-        $geometry: {
-          type: 'Point',
-          coordinates: parseLocationParameter(req.params.location).reverse(),
-        },
-      },
-    },
-  }).find((err, buildings) => res.send({ points: buildings }));
+init().then(() => {
+  console.log('Connected to database');
+  app.listen(PORT);
+  console.log(`Listening on port ${PORT}`);
 });

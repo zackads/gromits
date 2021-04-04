@@ -25,9 +25,9 @@ services:
     depends_on:
       - mongodb
     environment:
-      - DB_HOSTNAME
+      - DB_URL=localhost
     ports:
-      - '${BUILDINGS_PORT}:${BUILDINGS_PORT}'
+      - '8080:8080'
 
   web_app:
     build:
@@ -38,7 +38,5 @@ services:
     volumes:
       - ./web_app/src:/app/src
       - ./web_app/public:/app/public
-    environment:
-      - BUILDINGS_PORT
     depends_on:
       - buildings
