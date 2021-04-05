@@ -42,4 +42,4 @@ services:
       - ./web_app/src:/app/src
       - ./web_app/public:/app/public
     environment:
-      - POI_SERVICE_URI=localhost:8080/buildings
+      - REACT_APP_POI_SERVICE_URI=localhost:8080/buildings

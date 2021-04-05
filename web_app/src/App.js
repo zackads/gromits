@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import Map from './components/Map';
 
+const POI_SERVICE_URI = process.env.REACT_APP_POI_SERVICE_URI;
+
 const CENTRE = '@51.4663,-2.6012';
-const SERVICE = 'http://localhost:8875/buildings/' + CENTRE;
+const SERVICE = POI_SERVICE_URI + '/' + CENTRE;
 
 class App extends Component {
   state = {
@@ -11,6 +13,7 @@ class App extends Component {
   };
 
   async componentDidMount() {
+    console.log('POI_SERVICE_URI: ', POI_SERVICE_URI);
     const res = await axios.get(SERVICE);
     const buildings = res.data.points;
     this.setState({ buildings: buildings });
