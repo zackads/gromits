@@ -1,9 +1,10 @@
 const express = require('express');
+const cors = require('cors');
 import { query } from './db';
 
 export const router = express.Router();
 
-router.get('/buildings/:location', (req, res) => {
+router.get('/buildings/:location', cors(), (req, res) => {
   console.log(`GET /buildings/${req.params.location}`);
   const location = parseLocationParameter(req.params.location);
 
