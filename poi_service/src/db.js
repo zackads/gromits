@@ -1,11 +1,15 @@
 import { MongoClient } from 'mongodb';
 
+const ENV = process.env.NODE_ENV;
 const DB_URL = process.env.DB_URL;
 const DB_USER = process.env.DB_USER;
 const DB_PASSWORD = process.env.DB_PASSWORD;
 
-const uri = `mongodb+srv://${DB_USER}:${DB_PASSWORD}@${DB_URL}`;
-console.log(uri);
+const uri =
+  ENV === 'development'
+    ? `mongodb://${DB_URL}`
+    : `mongodb+srv://${DB_USER}:${DB_PASSWORD}@${DB_URL}`;
+
 const dbName = 'poi';
 const collectionName = 'buildings';
 
@@ -17,6 +21,7 @@ export const init = () =>
     useUnifiedTopology: true,
   }).then((client) => {
     db = client.db(dbName);
+    db.collection(collectionName).createIndex({ geometry: '2dsphere' });
   });
 
 export const query = (query) =>
