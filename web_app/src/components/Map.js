@@ -9,12 +9,12 @@ import {
 } from 'react-leaflet';
 import { POIService } from '../lib/POIService';
 
-export const MapComponent = ({ positionDefault = [51.4663, -2.6012] }) => {
+export const Map = ({ positionDefault = [51.4663, -2.6012] }) => {
   return (
     <MapContainer
       center={positionDefault}
       zoom={16}
-      style={{ height: '500px', width: '100%' }}
+      style={{ height: '100vh', width: '100%' }}
     >
       <TileLayer
         url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
