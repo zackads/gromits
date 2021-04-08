@@ -5,7 +5,6 @@ import {
   TileLayer,
   Marker,
   Popup,
-  useMap,
   useMapEvents,
 } from 'react-leaflet';
 import { POIService } from '../lib/POIService';
@@ -32,10 +31,8 @@ function BuildingMarkers() {
     error: false,
     points: [],
   });
+
   const map = useMapEvents({
-    load() {
-      fetchBuildings();
-    },
     mouseup() {
       fetchBuildings();
     },
@@ -59,6 +56,8 @@ function BuildingMarkers() {
       });
     }
   });
+
+  useEffect(() => fetchBuildings(), []);
 
   return buildings.points.map((building, index) => {
     return (
