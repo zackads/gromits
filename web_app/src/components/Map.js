@@ -48,6 +48,7 @@ function BuildingMarkers() {
         error: false,
         points,
       });
+      console.log(buildings.points[0]);
     } catch (error) {
       setBuildings({
         ...buildings,
@@ -68,7 +69,13 @@ function BuildingMarkers() {
         ]}
         key={index}
       >
-        <Popup>Building!</Popup>
+        <Popup>
+          <h2>{building.properties.Name}</h2>
+          <h3>Grade {building.properties.Grade}</h3>
+          <a href={building.properties.Hyperlink} target='_blank'>
+            Check it out
+          </a>
+        </Popup>
       </Marker>
     );
   });
