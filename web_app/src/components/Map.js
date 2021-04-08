@@ -14,7 +14,7 @@ export const MapComponent = ({ positionDefault = [51.4663, -2.6012] }) => {
   return (
     <MapContainer
       center={positionDefault}
-      zoom={13}
+      zoom={16}
       style={{ height: '500px', width: '100%' }}
     >
       <TileLayer
@@ -27,16 +27,15 @@ export const MapComponent = ({ positionDefault = [51.4663, -2.6012] }) => {
 };
 
 function BuildingMarkers() {
-  const POI_SERVICE_URI = process.env.REACT_APP_POI_SERVICE_URI;
-  const CENTRE = '@51.4663,-2.6012';
-  const SERVICE = 'http://' + POI_SERVICE_URI + '/' + CENTRE;
-
   const [buildings, setBuildings] = useState({
     isLoading: false,
     error: false,
     points: [],
   });
   const map = useMapEvents({
+    load() {
+      fetchBuildings();
+    },
     mouseup() {
       fetchBuildings();
     },
