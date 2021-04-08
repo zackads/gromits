@@ -1,37 +1,77 @@
-import React, { Component } from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import axios from 'axios';
+import React, { Component, useState, useEffect, useCallback } from 'react';
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  useMap,
+  useMapEvents,
+} from 'react-leaflet';
+import { POIService } from '../lib/POIService';
 
-export default class Map extends Component {
-  state = {
-    center: this.props.center,
-    zoom: 16,
-  };
-  render() {
-    return this.props.buildings ? (
-      <MapContainer
-        center={this.state.center}
-        zoom={this.state.zoom}
-        style={{ width: '100%', height: '900px' }}
+export const MapComponent = ({ positionDefault = [51.4663, -2.6012] }) => {
+  return (
+    <MapContainer
+      center={positionDefault}
+      zoom={13}
+      style={{ height: '500px', width: '100%' }}
+    >
+      <TileLayer
+        url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+      />
+      <BuildingMarkers />
+    </MapContainer>
+  );
+};
+
+function BuildingMarkers() {
+  const POI_SERVICE_URI = process.env.REACT_APP_POI_SERVICE_URI;
+  const CENTRE = '@51.4663,-2.6012';
+  const SERVICE = 'http://' + POI_SERVICE_URI + '/' + CENTRE;
+
+  const [buildings, setBuildings] = useState({
+    isLoading: false,
+    error: false,
+    points: [],
+  });
+  const map = useMapEvents({
+    mouseup() {
+      fetchBuildings();
+    },
+  });
+
+  const fetchBuildings = useCallback(async () => {
+    setBuildings({ ...buildings, isLoading: true });
+    try {
+      const points = await POIService.getBuildingsNear(map.getCenter());
+      setBuildings({
+        ...buildings,
+        isLoading: false,
+        error: false,
+        points,
+      });
+    } catch (error) {
+      setBuildings({
+        ...buildings,
+        isLoading: false,
+        error: error?.message,
+      });
+    }
+  });
+
+  return buildings.points.map((building, index) => {
+    return (
+      <Marker
+        position={[
+          building.geometry.coordinates[1],
+          building.geometry.coordinates[0],
+        ]}
+        key={index}
       >
-        <TileLayer
-          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-          url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-        />
-        {this.props.buildings.map((building, i) => {
-          const [lat, long] = building.geometry.coordinates.reverse();
-          return (
-            <Marker position={[lat, long]} key={i}>
-              <Popup>
-                <h1>{building.properties.Name}</h1>
-                <p>{building.properties.Grade}</p>
-              </Popup>
-            </Marker>
-          );
-        })}
-        <Marker position={[51.4573, -2.59882]}></Marker>
-      </MapContainer>
-    ) : (
-      'Data is loading'
+        <Popup>Building!</Popup>
+      </Marker>
     );
-  }
+  });
 }
