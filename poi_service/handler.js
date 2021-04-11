@@ -45,7 +45,6 @@ function queryDatabase(db, location = [-2.603183, 51.4729547]) {
     .find(query)
     .toArray()
     .then((buildings) => {
-      console.log(buildings);
       return { statusCode: 200, body: JSON.stringify(buildings) };
     })
     .catch((error) => {
@@ -65,13 +64,13 @@ const parseLocationParameter = (locationString) => {
 
 module.exports.handler = (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false;
+  const location = parseLocationParameter(event.pathParameters.location);
 
   console.log('event: ', event);
 
   connectToDatabase(MONGODB_URI)
-    .then((db) => queryDatabase(db))
+    .then((db) => queryDatabase(db, location))
     .then((result) => {
-      console.log('=> return result: ', result);
       callback(null, result);
     })
     .catch((error) => {

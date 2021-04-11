@@ -19,4 +19,4 @@ functions:
   app:
     handler: handler.handler
     events:
-      - http: GET /buildings
+      - http: GET /buildings/{location}
