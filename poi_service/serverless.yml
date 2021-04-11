@@ -1,16 +1,17 @@
 org: zackads
-app: poi-service
-service: aws-node-mongodb-atlas
+app: gromits
+service: poi-service
 
 provider:
   name: aws
   region: eu-west-2
+  stage: dev
   runtime: nodejs12.x
   lambdaHashingVersion: 20201221
-  environment:
-    DB_URL: ${param:dbUrl}
-    DB_USER: ${param:dbUser}
-    DB_PASS: ${param:dbPass}
+  # environment:
+  #   DB_URL: ${param:dbUrl}
+  #   DB_USER: ${param:dbUser}
+  #   DB_PASS: ${param:dbPass}
 
 plugins:
   - serverless-offline
@@ -19,4 +20,7 @@ functions:
   app:
     handler: handler.handler
     events:
-      - http: GET /buildings/{location}
+      - http:
+        path: /buildings/{location}
+        method: get
+        cors: true
