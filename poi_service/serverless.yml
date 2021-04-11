@@ -1,20 +1,22 @@
-service: aws-node-express-api
-
-frameworkVersion: '2'
-
+org: zackads
+app: poi-service
+service: aws-node-mongodb-atlas
 
 provider:
   name: aws
+  region: eu-west-2
   runtime: nodejs12.x
-  lambdaHashingVersion: '20201221'
+  lambdaHashingVersion: 20201221
+  environment:
+    DB_URL: ${param:dbUrl}
+    DB_USER: ${param:dbUser}
+    DB_PASS: ${param:dbPass}
+
+plugins:
+  - serverless-offline
 
 functions:
-  api:
+  app:
     handler: handler.handler
     events:
-      - http:
-          path: /
-          method: ANY
-      - http:
-          path: /{proxy+}
-          method: ANY
+      - http: GET /buildings

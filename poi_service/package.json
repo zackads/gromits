@@ -1,9 +1,18 @@
 {
-  "name": "aws-node-express-api",
+  "name": "gromits-poi-service",
   "version": "1.0.0",
-  "description": "",
+  "description": "API serving listed buildings in England",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1",
-    "serverless-http": "^2.7.0"
+    "mongodb": "^3.6.6"
+  },
+  "devDependencies": {
+    "serverless-offline": "^6.9.0"
   }
 }
