@@ -1,0 +1,31 @@
+{
+  "name": "buildings_service",
+  "version": "1.0.0",
+  "description": "Read-only service providing data on listed buildings in England.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon --exec babel-node src/service.js",
+    "test": "npx jest",
+    "build": "babel src/ -d build",
+    "serve": "node build/service.js",
+    "start": "npm run build && npm run serve"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jest": "^26.6.3",
+    "mongodb": "^3.6.5",
+    "serverless-http": "^2.7.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.13.10",
+    "@babel/core": "^7.13.10",
+    "@babel/node": "^7.13.10",
+    "@babel/preset-env": "^7.13.10",
+    "nodemon": "^2.0.7",
+    "prettier": "^2.2.1"
+  }
+}
