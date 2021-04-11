@@ -21,6 +21,6 @@ functions:
     handler: handler.handler
     events:
       - http:
-        path: /buildings/{location}
-        method: get
-        cors: true
+          path: /buildings/{location}
+          method: get
+          cors: true
