@@ -45,7 +45,14 @@ function queryDatabase(db, location = [-2.603183, 51.4729547]) {
     .find(query)
     .toArray()
     .then((buildings) => {
-      return { statusCode: 200, body: JSON.stringify(buildings) };
+      return {
+        statusCode: 200,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Credentials': true,
+        },
+        body: JSON.stringify(buildings),
+      };
     })
     .catch((error) => {
       console.log('=> an error occurred: ', error);
