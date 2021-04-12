@@ -47,7 +47,6 @@ function BuildingMarkers() {
         error: false,
         points,
       });
-      console.log(buildings.points[0]);
     } catch (error) {
       setBuildings({
         ...buildings,
@@ -55,9 +54,9 @@ function BuildingMarkers() {
         error: error?.message,
       });
     }
-  });
+  }, []);
 
-  useEffect(() => fetchBuildings(), []);
+  useEffect(() => fetchBuildings(), [fetchBuildings]);
 
   return buildings.points.map((building, index) => {
     return (
