@@ -6,7 +6,7 @@ provider:
   name: aws
   region: eu-west-2
   stage: dev
-  runtime: nodejs12.x
+  runtime: nodejs14.x
   lambdaHashingVersion: 20201221
   environment:
     DB_URL: ${param:dbUrl}
