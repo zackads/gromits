@@ -44,9 +44,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: hashicorp/setup-terraform@v1
-      - name: Refresh infrastructure
-        run: terraform apply -auto-approve -var-file=config.tfvars
+      - name: terraform init
         working-directory: web_app/terraform
+        run: terraform init
+      - name: terraform apply
+        working-directory: web_app/terraform
+        run: terraform apply -auto-approve -var-file=config.tfvars
       - name: Deploy to S3
         run: aws s3 sync build s3://gromits-webapp
 
