@@ -31,11 +31,11 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: npm install
-      - run: npm install
+        run: npm install
       - name: npm run build
-      - run: npm run build
+        run: npm run build
       - name: npm run test
-      - run: npm run test
+        run: npm run test
       - uses: hashicorp/setup-terraform@v1
       - name: terraform init
         working-directory: web_app/terraform
