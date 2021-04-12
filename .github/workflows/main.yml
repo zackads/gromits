@@ -14,6 +14,9 @@ jobs:
   build_webapp:
     name: Build Webapp
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web_app
     strategy:
       matrix:
         node-version: [12.x]
@@ -30,6 +33,9 @@ jobs:
     name: Deploy Webapp
     needs: [build_webapp]
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web_app
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -40,11 +46,14 @@ jobs:
       - name: Refresh infrastructure
         run: terraform apply web_app/terraform -auto-approve -var-file=web_app/terraform/config.tfvars
       - name: Deploy to S3
-        run: aws s3 sync web_app/build s3://gromits-webapp
+        run: aws s3 sync build s3://gromits-webapp
 
   deploy_poi_service:
     name: Deploy POI Service
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: poi_service
     strategy:
       matrix:
         node-version: [12.x]
