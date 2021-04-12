@@ -65,6 +65,8 @@ jobs:
         run: npm install
       - name: Setup Serverless
         run: npm i -g serverless@2.x
+      - name: Login to Serverless
+        run: serverless login
       - name: Deploy
         run: serverless deploy
         env:
