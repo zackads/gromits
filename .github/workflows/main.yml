@@ -21,15 +21,11 @@ jobs:
     defaults:
       run:
         working-directory: web_app
-    strategy:
-      matrix:
-        node-version: [14.x]
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+      - uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 14
       - name: npm install
         run: npm install
       - name: npm run build
@@ -52,21 +48,17 @@ jobs:
     defaults:
       run:
         working-directory: poi_service
-    strategy:
-      matrix:
-        node-version: [14.x]
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.JS ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+      - uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: '14'
       - name: npm install
         run: npm install
-      - name: Setup Serverless
+      - name: Install Serverless Framework
         run: npm i -g serverless@2.x
-      - name: Login to Serverless
-        run: serverless login
+      - name: Authenticate Serverless with AWS
+        run: sls config credentials --provider aws --key ${{ secrets.AWS_KEY }} --secret ${{ secrets.AWS_SECRET }}
       - name: Deploy
         run: serverless deploy
         env:
