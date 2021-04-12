@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import {
   MapContainer,
   TileLayer,
@@ -54,9 +54,10 @@ function BuildingMarkers() {
         error: error?.message,
       });
     }
-  }, []);
+  }, [buildings, map]);
 
-  useEffect(() => fetchBuildings(), [fetchBuildings]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => fetchBuildings(), []);
 
   return buildings.points.map((building, index) => {
     return (
