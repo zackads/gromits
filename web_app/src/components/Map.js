@@ -1,5 +1,4 @@
-import axios from 'axios';
-import React, { Component, useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   MapContainer,
   TileLayer,
@@ -72,7 +71,11 @@ function BuildingMarkers() {
         <Popup>
           <h2>{building.properties.Name}</h2>
           <h3>Grade {building.properties.Grade}</h3>
-          <a href={building.properties.Hyperlink} target='_blank'>
+          <a
+            href={building.properties.Hyperlink}
+            target='_blank'
+            rel='noreferrer'
+          >
             Check it out
           </a>
         </Popup>

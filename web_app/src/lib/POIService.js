@@ -6,7 +6,7 @@ export const POIService = {
   getBuildingsNear: async (point) => {
     try {
       const { data: response } = await axios.get(
-        'http://' + POI_SERVICE_URI + '/' + locationParam(point)
+        'https://' + POI_SERVICE_URI + '/' + locationParam(point)
       );
       return response;
     } catch (error) {
