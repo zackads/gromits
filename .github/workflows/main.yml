@@ -64,10 +64,10 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Serverless Deploy
-        uses: serverless/github-action@master
-        with:
-          args: deploy
+      - name: Setup Serverless
+        run: npm i -g serverless@2.x
+      - name: Deploy
+        run: serverless deploy
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
