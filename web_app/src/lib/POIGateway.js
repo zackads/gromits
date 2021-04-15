@@ -7,13 +7,12 @@ export const POIGateway = {
   getBuildingsNear: async (point) => {
     try {
       const { data: response } = await axios.get(
-        POI_SERVICE_URI + '/' + locationParam(point)
+        POI_SERVICE_URI + '/' + POIGateway.locationParam(point)
       );
       return response;
     } catch (error) {
       console.log(error);
     }
   },
+  locationParam: (latlong) => `@${latlong.lat},${latlong.lng}`,
 };
-
-const locationParam = (latlong) => `@${latlong.lat},${latlong.lng}`;
