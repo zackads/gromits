@@ -6,11 +6,12 @@ describe('<Map>', () => {
     getBuildingsNear: jest.fn().mockResolvedValue([]),
   };
 
-  it('calls the injected fetchPOIs functions', async () => {
-    render(<Map poiGateway={mockPoiGateway} />);
+  it('queries the injected poiGateway for POI markers to display', async () => {
+    const centre = { lat: 51.4846117, lng: -0.0072328 };
+    render(<Map poiGateway={mockPoiGateway} centre={centre} />);
 
     await waitFor(() => {
-      expect(mockPoiGateway.getBuildingsNear).toHaveBeenCalled();
+      expect(mockPoiGateway.getBuildingsNear).toHaveBeenCalledWith(centre);
     });
   });
 

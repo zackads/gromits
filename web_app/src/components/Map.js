@@ -7,10 +7,13 @@ import {
   useMapEvents,
 } from 'react-leaflet';
 
-export const Map = ({ positionDefault = [51.4663, -2.6012], poiGateway }) => {
+export const Map = ({
+  centre = { lat: 51.4663, lng: -2.6012 },
+  poiGateway,
+}) => {
   return (
     <MapContainer
-      center={positionDefault}
+      center={[centre.lat, centre.lng]}
       zoom={16}
       style={{ height: '100vh', width: '100%' }}
     >
