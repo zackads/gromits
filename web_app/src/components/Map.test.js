@@ -1,3 +1,4 @@
-it('expects true to be true', () => {
-  expect(true).toEqual(true);
+test('renders', () => {
+  const behaviour = () => render(<Map />);
+  expect(behaviour).not.toThrow(new Error());
 });

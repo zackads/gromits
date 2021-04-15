@@ -6,7 +6,7 @@ import {
   Popup,
   useMapEvents,
 } from 'react-leaflet';
-import { POIService } from '../lib/POIService';
+import { POIGateway } from '../lib/POIGateway';
 
 export const Map = ({ positionDefault = [51.4663, -2.6012] }) => {
   return (
@@ -40,7 +40,7 @@ function BuildingMarkers() {
   const fetchBuildings = useCallback(async () => {
     setBuildings({ ...buildings, isLoading: true });
     try {
-      const points = await POIService.getBuildingsNear(map.getCenter());
+      const points = await POIGateway.getBuildingsNear(map.getCenter());
       setBuildings({
         ...buildings,
         isLoading: false,
