@@ -1,5 +1,5 @@
 const axios = require('axios');
-import { POIGateway } from './POIGateway';
+import * as POIGateway from './POIGateway';
 
 jest.mock('axios');
 

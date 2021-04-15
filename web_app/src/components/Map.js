@@ -6,9 +6,8 @@ import {
   Popup,
   useMapEvents,
 } from 'react-leaflet';
-import { POIGateway } from '../lib/POIGateway';
 
-export const Map = ({ positionDefault = [51.4663, -2.6012] }) => {
+export const Map = ({ positionDefault = [51.4663, -2.6012], poiGateway }) => {
   return (
     <MapContainer
       center={positionDefault}
@@ -19,12 +18,12 @@ export const Map = ({ positionDefault = [51.4663, -2.6012] }) => {
         url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
       />
-      <BuildingMarkers />
+      <BuildingMarkers poiGateway={poiGateway} />
     </MapContainer>
   );
 };
 
-function BuildingMarkers() {
+const BuildingMarkers = ({ poiGateway }) => {
   const [buildings, setBuildings] = useState({
     isLoading: false,
     error: false,
@@ -40,7 +39,7 @@ function BuildingMarkers() {
   const fetchBuildings = useCallback(async () => {
     setBuildings({ ...buildings, isLoading: true });
     try {
-      const points = await POIGateway.getBuildingsNear(map.getCenter());
+      const points = await poiGateway.getBuildingsNear(map.getCenter());
       setBuildings({
         ...buildings,
         isLoading: false,
@@ -54,7 +53,7 @@ function BuildingMarkers() {
         error: error?.message,
       });
     }
-  }, [buildings, map]);
+  }, [buildings, map, poiGateway]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => fetchBuildings(), []);
@@ -82,4 +81,4 @@ function BuildingMarkers() {
       </Marker>
     );
   });
-}
+};
