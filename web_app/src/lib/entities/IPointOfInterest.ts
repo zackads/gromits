@@ -19,12 +19,12 @@ export interface IPointOfInterest {
   geometry: IGeometry;
 }
 
-enum BuildingGrades {
+export enum BuildingGrades {
   one = "I",
   two = "II",
   three = "II*",
 }
 
-enum Shapes {
+export enum Shapes {
   Point = "POINT",
 }

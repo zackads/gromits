@@ -96,6 +96,7 @@ const BuildingMarkers = ({ poiGateway }: BuildingMarkersProps): JSX.Element => {
             building.geometry.coordinates[0],
           ]}
           key={index}
+          alt="Listed building"
         >
           <Popup>
             <h2>{building.properties.name}</h2>
