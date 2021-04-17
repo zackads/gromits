@@ -2,7 +2,7 @@ const transform = require("./transform");
 
 describe("transform()", () => {
   const buildingFromDb = {
-    _id: { $oid: "60672a56899f0e73b60302b1" },
+    _id: "60672a56899f0e73b60302b1",
     type: "Feature",
     properties: {
       ListEntry: 1021498,

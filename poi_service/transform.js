@@ -1,6 +1,6 @@
 function transform(buildingFromDb) {
   return {
-    id: buildingFromDb._id.$oid,
+    id: buildingFromDb._id,
     properties: {
       name: buildingFromDb.properties.Name,
       listEntry: buildingFromDb.properties.ListEntry,
