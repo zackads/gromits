@@ -1,6 +1,7 @@
 import React from "react";
 import { render, waitFor, screen } from "@testing-library/react";
 import { Map } from "./Map";
+
 import { LatLng } from "../lib/entities/LatLng";
 import {
   BuildingGrades,

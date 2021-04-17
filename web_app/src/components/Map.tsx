@@ -29,6 +29,7 @@ export const Map: FunctionComponent<MapProps> = ({
       center={centre}
       zoom={16}
       style={{ height: "100vh", width: "100%" }}
+      tap={false}
     >
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
