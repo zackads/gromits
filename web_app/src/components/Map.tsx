@@ -21,7 +21,7 @@ import {
   gradeIBuildingIcon,
   gradeIIBuildingIcon,
   gradeIIStarBuildingIcon,
-} from "./icons/buildings";
+} from "./icons/BuildingIcons";
 
 interface MapProps {
   centre?: LatLng;

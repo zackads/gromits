@@ -21,8 +21,8 @@ export interface IPointOfInterest {
 
 export enum BuildingGrades {
   one = "I",
-  two = "II",
-  three = "II*",
+  two = "II*",
+  three = "II",
 }
 
 export enum Shapes {
