@@ -100,7 +100,6 @@ const BuildingMarkers = ({ poiGateway }: BuildingMarkersProps): JSX.Element => {
           <Popup key={building.id}>
             <h2>{building.properties.name}</h2>
             <h3>Grade {building.properties.grade}</h3>
-            <p>{`id >> ${building.id} << id`}</p>
             <a
               href={building.properties.hyperlink}
               target="_blank"
