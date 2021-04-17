@@ -1,14 +1,14 @@
-'use strict';
-const MongoClient = require('mongodb').MongoClient;
+"use strict";
+const MongoClient = require("mongodb").MongoClient;
 const MONGODB_URI = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_URL}`;
 
 let cachedDb = null;
 
 function connectToDatabase(uri) {
-  console.log('=> connect to database');
+  console.log("=> connect to database");
 
   if (cachedDb) {
-    console.log('=> using cached database instance');
+    console.log("=> using cached database instance");
     return Promise.resolve(cachedDb);
   }
 
@@ -17,15 +17,15 @@ function connectToDatabase(uri) {
     useUnifiedTopology: true,
   })
     .then((client) => {
-      cachedDb = client.db('poi');
+      cachedDb = client.db("poi");
       return cachedDb;
     })
     .catch((error) => {
-      console.log('=> an error occurred: ', error);
+      console.log("=> an error occurred: ", error);
     });
 }
 
-function queryDatabase(db, location = [-2.603183, 51.4729547]) {
+function queryDatabase(db, location) {
   console.log(`=> query database for buildings near ${location}`);
 
   const query = {
@@ -33,7 +33,7 @@ function queryDatabase(db, location = [-2.603183, 51.4729547]) {
       $near: {
         $maxDistance: 1000,
         $geometry: {
-          type: 'Point',
+          type: "Point",
           coordinates: location,
         },
       },
@@ -41,22 +41,22 @@ function queryDatabase(db, location = [-2.603183, 51.4729547]) {
   };
 
   return db
-    .collection('buildings')
+    .collection("buildings")
     .find(query)
     .toArray()
     .then((buildings) => {
       return {
         statusCode: 200,
         headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Credentials': true,
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Credentials": true,
         },
         body: JSON.stringify(buildings),
       };
     })
     .catch((error) => {
-      console.log('=> an error occurred: ', error);
-      return { statusCode: 500, body: 'error' };
+      console.log("=> an error occurred: ", error);
+      return { statusCode: 500, body: "error" };
     });
 }
 
@@ -64,7 +64,7 @@ const parseLocationParameter = (locationString) => {
   // "@51.47552,-2.60833" ==> [-2.60833, 51.47552]
   return locationString
     .substring(1)
-    .split(',')
+    .split(",")
     .map((datum) => parseFloat(datum))
     .reverse();
 };
@@ -73,7 +73,7 @@ module.exports.handler = (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false;
   const location = parseLocationParameter(event.pathParameters.location);
 
-  console.log('event: ', event);
+  console.log("event: ", event);
 
   connectToDatabase(MONGODB_URI)
     .then((db) => queryDatabase(db, location))
@@ -81,7 +81,7 @@ module.exports.handler = (event, context, callback) => {
       callback(null, result);
     })
     .catch((error) => {
-      console.log('=> an error occurred: ', error);
+      console.log("=> an error occurred: ", error);
       callback(error);
     });
 };

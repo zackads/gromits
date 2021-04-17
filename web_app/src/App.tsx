@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { Map } from './components/Map';
-import poiGateway from './lib/adapters/poiGateway';
+import { BuildingsGateway } from './lib/gateways/BuildingsGateway';
+
 class App extends Component {
   render() {
-    return <Map poiGateway={poiGateway} />;
+    return <Map poiGateway={new BuildingsGateway()} />;
   }
 }
 
