@@ -12,8 +12,16 @@ import {
   useMapEvents,
 } from "react-leaflet";
 import { LatLng } from "../lib/entities/LatLng";
-import { IPointOfInterest } from "../lib/entities/IPointOfInterest";
+import {
+  BuildingGrades,
+  IPointOfInterest,
+} from "../lib/entities/IPointOfInterest";
 import { IPoiGateway } from "../lib/gateways/IPoiGateway";
+import {
+  gradeIBuildingIcon,
+  gradeIIBuildingIcon,
+  gradeIIStarBuildingIcon,
+} from "./icons/buildings";
 
 interface MapProps {
   centre?: LatLng;
@@ -96,6 +104,7 @@ const BuildingMarkers = ({ poiGateway }: BuildingMarkersProps): JSX.Element => {
           key={building.id}
           alt={"Listed building"}
           title={building.properties.name}
+          icon={buildingIcon(building)}
         >
           <Popup key={building.id}>
             <h2>{building.properties.name}</h2>
@@ -113,4 +122,17 @@ const BuildingMarkers = ({ poiGateway }: BuildingMarkersProps): JSX.Element => {
     : [];
 
   return <>{markers}</>;
+};
+
+const buildingIcon = (building: IPointOfInterest) => {
+  switch (building.properties.grade) {
+    case BuildingGrades.one:
+      return gradeIBuildingIcon;
+    case BuildingGrades.two:
+      return gradeIIStarBuildingIcon;
+    case BuildingGrades.three:
+      return gradeIIBuildingIcon;
+    default:
+      throw new Error("Unrecognised building grade");
+  }
 };
