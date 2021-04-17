@@ -1,5 +1,10 @@
 import React from "react";
-import { render, screen, waitFor } from "@testing-library/react";
+import {
+  render,
+  screen,
+  waitFor,
+  waitForElementToBeRemoved,
+} from "@testing-library/react";
 import { Map } from "./Map";
 
 import { LatLng } from "../lib/entities/LatLng";
@@ -11,7 +16,7 @@ import {
 import { IPoiGateway } from "../lib/gateways/IPoiGateway";
 
 describe("Map", () => {
-  const mapCentre: LatLng = [51.4846117, -0.0072328];
+  const mapCentre: LatLng = [51.484573, -0.007307];
 
   let mockPoiGateway: IPoiGateway;
 
@@ -19,6 +24,12 @@ describe("Map", () => {
     mockPoiGateway = {
       fetchNear: jest.fn().mockResolvedValue(buildings),
     };
+  });
+
+  it("displays a loading message while it gets POI markers", async () => {
+    render(<Map centre={mapCentre} poiGateway={mockPoiGateway} />);
+
+    expect(await screen.findByText(/Loading/i)).toBeVisible();
   });
 
   it("queries the injected poiGateway for POI markers to display", async () => {
@@ -29,14 +40,18 @@ describe("Map", () => {
     });
   });
 
+  it("hides the loading message when POI markers are displayed", async () => {
+    render(<Map centre={mapCentre} poiGateway={mockPoiGateway} />);
+
+    await waitForElementToBeRemoved(() => screen.getByText(/loading/i));
+  });
+
   it("user can see points of interest", async () => {
     render(<Map centre={mapCentre} poiGateway={mockPoiGateway} />);
 
-    await waitFor(() => {
-      expect(screen.getAllByAltText("Listed building")).toHaveLength(
-        buildings.length
-      );
-    });
+    expect(await screen.findAllByAltText("Listed building")).toHaveLength(
+      buildings.length
+    );
   });
 
   it("user can click on a point of interest to see its relevant properties", async () => {
