@@ -1,5 +1,5 @@
 import React from "react";
-import { render, waitFor, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { Map } from "./Map";
 
 import { LatLng } from "../lib/entities/LatLng";
@@ -45,7 +45,7 @@ describe("Map", () => {
     render(<Map centre={mapCentre} poiGateway={mockPoiGateway} />);
 
     await waitFor(() => {
-      expect(screen.getAllByAltText("Listed building")).toHaveLength(1);
+      expect(screen.getByAltText("Listed building")).toBeVisible();
     });
   });
 

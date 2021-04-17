@@ -1,14 +1,14 @@
 import React, {
-  useState,
+  FunctionComponent,
   useCallback,
   useEffect,
-  FunctionComponent,
+  useState,
 } from "react";
 import {
   MapContainer,
-  TileLayer,
   Marker,
   Popup,
+  TileLayer,
   useMapEvents,
 } from "react-leaflet";
 import { LatLng } from "../lib/entities/LatLng";
@@ -92,10 +92,7 @@ const BuildingMarkers = ({ poiGateway }: BuildingMarkersProps): JSX.Element => {
   const markers = buildings.points
     ? buildings.points.map((building, index) => (
         <Marker
-          position={[
-            building.geometry.coordinates[1],
-            building.geometry.coordinates[0],
-          ]}
+          position={building.geometry.coordinates}
           key={index}
           alt="Listed building"
         >
