@@ -13,23 +13,11 @@ import { IPoiGateway } from "../lib/gateways/IPoiGateway";
 describe("Map", () => {
   const mapCentre: LatLng = [51.4846117, -0.0072328];
 
-  const building: IPointOfInterest = {
-    id: "1",
-    properties: {
-      name: "Nakatomi Plaza",
-      listEntry: 42,
-      location: "2121 Avenue of the Stars, Los Angeles",
-      grade: BuildingGrades.two,
-      hyperlink: "https://en.wikipedia.org/wiki/Die_Hard_(film_series)",
-    },
-    geometry: { type: Shapes.Point, coordinates: [51.4846117, -0.0072328] },
-  };
-
   let mockPoiGateway: IPoiGateway;
 
   beforeEach(() => {
     mockPoiGateway = {
-      fetchNear: jest.fn().mockResolvedValue([building]),
+      fetchNear: jest.fn().mockResolvedValue(buildings),
     };
   });
 
@@ -45,17 +33,46 @@ describe("Map", () => {
     render(<Map centre={mapCentre} poiGateway={mockPoiGateway} />);
 
     await waitFor(() => {
-      expect(screen.getByAltText("Listed building")).toBeVisible();
+      expect(screen.getAllByAltText("Listed building")).toHaveLength(
+        buildings.length
+      );
     });
   });
 
   it("user can click on a point of interest to see its relevant properties", async () => {
+    const poi = buildings[0];
+
     render(<Map centre={mapCentre} poiGateway={mockPoiGateway} />);
 
     await waitFor(() => {
-      screen.getByAltText("Listed building").click();
-      expect(screen.getByText(building.properties.name, { exact: false }));
-      expect(screen.getByText(building.properties.grade, { exact: false }));
+      screen.getByTitle(poi.properties.name).click();
+      expect(screen.getByText(poi.properties.name, { exact: false }));
+      expect(screen.getByText(poi.properties.grade, { exact: false }));
     });
   });
 });
+
+const buildings: IPointOfInterest[] = [
+  {
+    id: "1",
+    properties: {
+      name: "Nakatomi Plaza",
+      listEntry: 42,
+      location: "2121 Avenue of the Stars, Los Angeles",
+      grade: BuildingGrades.two,
+      hyperlink: "https://en.wikipedia.org/wiki/Die_Hard_(film_series)",
+    },
+    geometry: { type: Shapes.Point, coordinates: [51.4846117, -0.0072328] },
+  },
+  {
+    id: "2",
+    properties: {
+      name: "Wayne Manor",
+      listEntry: 1664,
+      location: "Gotham City",
+      grade: BuildingGrades.three,
+      hyperlink: "https://en.wikipedia.org/wiki/Batman",
+    },
+    geometry: { type: Shapes.Point, coordinates: [51.4755209, -2.6083328] },
+  },
+];

@@ -58,7 +58,7 @@ const BuildingMarkers = ({ poiGateway }: BuildingMarkersProps): JSX.Element => {
   });
 
   const map = useMapEvents({
-    mouseup() {
+    moveend() {
       fetchBuildings();
     },
   });
@@ -90,15 +90,17 @@ const BuildingMarkers = ({ poiGateway }: BuildingMarkersProps): JSX.Element => {
   }, []);
 
   const markers = buildings.points
-    ? buildings.points.map((building, index) => (
+    ? buildings.points.map((building) => (
         <Marker
           position={building.geometry.coordinates}
-          key={index}
-          alt="Listed building"
+          key={building.id}
+          alt={"Listed building"}
+          title={building.properties.name}
         >
-          <Popup>
+          <Popup key={building.id}>
             <h2>{building.properties.name}</h2>
             <h3>Grade {building.properties.grade}</h3>
+            <p>{`id >> ${building.id} << id`}</p>
             <a
               href={building.properties.hyperlink}
               target="_blank"

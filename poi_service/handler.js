@@ -46,6 +46,7 @@ function queryDatabase(db, location) {
     .find(query)
     .toArray()
     .then((buildings) => {
+      console.log(buildings[0]);
       return {
         statusCode: 200,
         headers: {
