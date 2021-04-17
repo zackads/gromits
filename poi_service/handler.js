@@ -1,6 +1,7 @@
 "use strict";
 const MongoClient = require("mongodb").MongoClient;
 const MONGODB_URI = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_URL}`;
+const transform = require("transform");
 
 let cachedDb = null;
 
@@ -51,7 +52,7 @@ function queryDatabase(db, location) {
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Credentials": true,
         },
-        body: JSON.stringify(buildings),
+        body: JSON.stringify(buildings.map(transform)),
       };
     })
     .catch((error) => {
