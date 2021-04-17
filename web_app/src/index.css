@@ -9,10 +9,14 @@ body {
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  monospace;
 }
 
 .leaflet-container {
   width: 100%;
   height: 100vh;
+}
+
+.greyscale {
+  filter: grayscale(100%)
 }
