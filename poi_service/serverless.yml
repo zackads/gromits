@@ -18,6 +18,7 @@ provider:
 
 plugins:
   - serverless-offline
+  - serverless-plugin-typescript
 
 functions:
   app:
