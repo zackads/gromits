@@ -16,6 +16,8 @@ import { IPointOfInterest } from "../lib/entities/IPointOfInterest";
 import { IPoiGateway } from "../lib/gateways/IPoiGateway";
 import { buildingIcon } from "./icons/BuildingIcons";
 import { LoadingSpinner } from "./LoadingSpinner";
+import { LatLngBounds } from "leaflet";
+import { Polygon } from "../lib/entities/Polygon";
 
 interface MapProps {
   centre: LatLng;
@@ -66,8 +68,7 @@ const POIMap: FunctionComponent<POIMapProps> = ({
   const fetchBuildings = useCallback(async () => {
     setBuildings({ ...buildings, isLoading: true });
     try {
-      const { lat, lng } = map.getCenter();
-      const points = await poiGateway.fetchNear([lat, lng]);
+      const points = await poiGateway.fetchWithin(viewport(map.getBounds()));
       setBuildings({
         ...buildings,
         isLoading: false,
@@ -131,3 +132,15 @@ const BuildingMarkers = ({ buildings }: BuildingMarkersProps): JSX.Element => (
     ))}
   </>
 );
+
+const viewport = (bounds: LatLngBounds): Polygon => {
+  return [
+    [
+      [bounds.getNorthWest().lat, bounds.getNorthWest().lng],
+      [bounds.getNorthEast().lat, bounds.getNorthEast().lng],
+      [bounds.getSouthEast().lat, bounds.getSouthEast().lng],
+      [bounds.getSouthWest().lat, bounds.getSouthWest().lng],
+      [bounds.getNorthWest().lat, bounds.getNorthWest().lng],
+    ],
+  ];
+};
