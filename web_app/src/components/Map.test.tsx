@@ -29,7 +29,7 @@ describe("Map", () => {
   it("displays a loading message while it gets POI markers", async () => {
     render(<Map centre={mapCentre} poiGateway={mockPoiGateway} />);
 
-    expect(await screen.findByText(/Loading/i)).toBeVisible();
+    expect(await screen.findByRole("progressbar")).toBeVisible();
   });
 
   it("queries the injected poiGateway for POI markers to display", async () => {
@@ -43,7 +43,7 @@ describe("Map", () => {
   it("hides the loading message when POI markers are displayed", async () => {
     render(<Map centre={mapCentre} poiGateway={mockPoiGateway} />);
 
-    await waitForElementToBeRemoved(() => screen.getByText(/loading/i));
+    await waitForElementToBeRemoved(() => screen.getByRole("progressbar"));
   });
 
   it("user can see points of interest", async () => {

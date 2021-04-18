@@ -1,4 +1,4 @@
-import { Alert } from "./Alert";
+import { LoadingSpinner } from "./LoadingSpinner";
 import { render, screen } from "@testing-library/react";
 import { MapContainer } from "react-leaflet";
 import React, { FunctionComponent } from "react";
@@ -13,15 +13,15 @@ export const TestMapContainer: FunctionComponent = ({
   );
 };
 
-describe("Alert component", () => {
-  it("Renders the message", () => {
+describe("LoadingSpinner component", () => {
+  it("Fulfills the progressbar role", () => {
     const message = "Loading...";
     render(
       <TestMapContainer>
-        <Alert>{message}</Alert>
+        <LoadingSpinner>{message}</LoadingSpinner>
       </TestMapContainer>
     );
 
-    expect(screen.getByText(message)).toBeVisible();
+    expect(screen.getByRole("progressbar")).toBeVisible();
   });
 });

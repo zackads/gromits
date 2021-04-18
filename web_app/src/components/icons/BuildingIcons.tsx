@@ -1,4 +1,8 @@
 import L from "leaflet";
+import {
+  BuildingGrades,
+  IPointOfInterest,
+} from "../../lib/entities/IPointOfInterest";
 
 export const gradeIBuildingIcon = new L.Icon({
   iconUrl: "icons/building-grade-i.png",
@@ -20,3 +24,16 @@ export const gradeIIBuildingIcon = new L.Icon({
   iconSize: [24, 24],
   popupAnchor: [0, -20],
 });
+
+export const buildingIcon = (building: IPointOfInterest) => {
+  switch (building.properties.grade) {
+    case BuildingGrades.one:
+      return gradeIBuildingIcon;
+    case BuildingGrades.two:
+      return gradeIIStarBuildingIcon;
+    case BuildingGrades.three:
+      return gradeIIBuildingIcon;
+    default:
+      throw new Error("Unrecognised building grade");
+  }
+};
