@@ -1,7 +1,7 @@
 "use strict";
 const MongoClient = require("mongodb").MongoClient;
 const MONGODB_URI = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_URL}`;
-const transform = require("transform");
+const { queryDatabase } = require("./utils/db");
 
 let cachedDb = null;
 
@@ -23,42 +23,6 @@ function connectToDatabase(uri) {
     })
     .catch((error) => {
       console.log("=> an error occurred: ", error);
-    });
-}
-
-function queryDatabase(db, location) {
-  console.log(`=> query database for buildings near ${location}`);
-
-  const query = {
-    geometry: {
-      $near: {
-        $maxDistance: 1000,
-        $geometry: {
-          type: "Point",
-          coordinates: location,
-        },
-      },
-    },
-  };
-
-  return db
-    .collection("buildings")
-    .find(query)
-    .toArray()
-    .then((buildings) => {
-      console.log(buildings[0]);
-      return {
-        statusCode: 200,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Credentials": true,
-        },
-        body: JSON.stringify(buildings.map(transform)),
-      };
-    })
-    .catch((error) => {
-      console.log("=> an error occurred: ", error);
-      return { statusCode: 500, body: "error" };
     });
 }
 

@@ -18,4 +18,4 @@ function transform(buildingFromDb) {
   };
 }
 
-module.exports = transform;
+module.exports = { transform };
