@@ -1,15 +1,16 @@
 const { transform } = require("./transform");
 
-function queryDatabase(db, location) {
-  console.log(`=> query database for buildings near ${location}`);
+function getBuildingsWithin(db, polygon) {
+  console.log(
+    `=> query database for buildings within ${JSON.stringify(polygon)}`
+  );
 
   const query = {
     geometry: {
-      $near: {
-        $maxDistance: 1000,
+      $geoWithin: {
         $geometry: {
-          type: "Point",
-          coordinates: location,
+          type: "Polygon",
+          coordinates: polygon,
         },
       },
     },
@@ -36,4 +37,4 @@ function queryDatabase(db, location) {
     });
 }
 
-module.exports = { queryDatabase };
+module.exports = { getBuildingsWithin };

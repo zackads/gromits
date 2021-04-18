@@ -27,3 +27,7 @@ functions:
           path: /buildings/{location}
           method: get
           cors: true
+      - http:
+          path: /buildings/polygon/
+          method: get
+          cors: true
