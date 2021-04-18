@@ -9,10 +9,10 @@ export class BuildingsGateway implements IPoiGateway {
 
   public async fetchNear(point: LatLng): Promise<IPointOfInterest[]> {
     try {
-      const { data: response } = await axios.get(
+      const { data: responseBody } = await axios.get(
         this.POI_SERVICE_URI + "/" + BuildingsGateway.locationParam(point)
       );
-      return response;
+      return responseBody.data;
     } catch (error) {
       throw error;
     }

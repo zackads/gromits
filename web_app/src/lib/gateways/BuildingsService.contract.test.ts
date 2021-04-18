@@ -6,10 +6,14 @@ describe("The buildings POI service", () => {
     const POI_SERVICE_URI =
       "https://l5m7m3ixeb.execute-api.eu-west-2.amazonaws.com/dev/buildings";
     const queryParam = "@51.4663,-2.6012";
-    const { data: buildings } = await axios.get(
+    const { data: responseBody } = await axios.get(
       POI_SERVICE_URI + "/" + queryParam
     );
-    const poi: IPointOfInterest = buildings[0];
+
+    expect(typeof responseBody).toBe("object");
+    expect(Array.isArray(responseBody.data)).toBeTruthy();
+
+    const poi: IPointOfInterest = responseBody.data[0];
 
     expect(typeof poi.id).toBe("string");
     expect(typeof poi.properties.name).toBe("string");
