@@ -16,17 +16,20 @@ import { IPointOfInterest } from "../lib/entities/IPointOfInterest";
 import { IPoiGateway } from "../lib/gateways/IPoiGateway";
 import { buildingIcon } from "./icons/BuildingIcons";
 import { LoadingSpinner } from "./LoadingSpinner";
+import { Alert } from "./Alert";
 import { LatLngBounds } from "leaflet";
 import { Polygon } from "../lib/entities/Polygon";
 
 interface MapProps {
   centre: LatLng;
   poiGateway: IPoiGateway;
+  maxMarkerCount?: Number;
 }
 
 export const Map: FunctionComponent<MapProps> = ({
   centre,
   poiGateway,
+  maxMarkerCount = 1000,
 }: MapProps): JSX.Element => {
   return (
     <MapContainer
@@ -35,13 +38,14 @@ export const Map: FunctionComponent<MapProps> = ({
       style={{ height: "100vh", width: "100%" }}
       tap={false}
     >
-      <POIMap poiGateway={poiGateway} />
+      <POIMap poiGateway={poiGateway} maxMarkerCount={maxMarkerCount} />
     </MapContainer>
   );
 };
 
 interface POIMapProps {
   poiGateway: IPoiGateway;
+  maxMarkerCount: Number;
 }
 
 interface BuildingsState {
@@ -52,40 +56,49 @@ interface BuildingsState {
 
 const POIMap: FunctionComponent<POIMapProps> = ({
   poiGateway,
+  maxMarkerCount,
 }: POIMapProps): JSX.Element => {
-  const [buildings, setBuildings] = useState<BuildingsState>({
-    isLoading: false,
+  const [state, setState] = useState<BuildingsState>({
+    isLoading: true,
     error: false,
     points: [],
   });
-
   const map = useMapEvents({
     moveend() {
+      fetchBuildings();
+    },
+    locationfound(e) {
+      map.flyTo(e.latlng, map.getZoom());
+      setState({ ...state, isLoading: true });
+    },
+    locationerror(e) {
+      console.log(e);
       fetchBuildings();
     },
   });
 
   const fetchBuildings = useCallback(async () => {
-    setBuildings({ ...buildings, isLoading: true });
+    setState({ ...state, isLoading: true });
     try {
       const points = await poiGateway.fetchWithin(viewport(map.getBounds()));
-      setBuildings({
-        ...buildings,
+      setState({
+        ...state,
         isLoading: false,
         error: false,
         points,
       });
     } catch (error) {
-      setBuildings({
-        ...buildings,
+      setState({
+        ...state,
         isLoading: false,
         error: error?.message,
       });
     }
-  }, [buildings, map, poiGateway]);
+  }, [state, map, poiGateway]);
 
-  // Necessary to fetch buildings on first render
+  // Run on first render only
   useEffect((): void => {
+    map.locate();
     fetchBuildings();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -97,8 +110,12 @@ const POIMap: FunctionComponent<POIMapProps> = ({
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         className="greyscale"
       />
-      {buildings.isLoading && <LoadingSpinner>Loading...</LoadingSpinner>}
-      <BuildingMarkers buildings={buildings.points} />
+      {state.isLoading && <LoadingSpinner>Loading...</LoadingSpinner>}
+      {state.points.length > maxMarkerCount ? (
+        <Alert> Uh-oh! Too many buildings. Try zooming in.</Alert>
+      ) : (
+        <BuildingMarkers buildings={state.points} />
+      )}
     </>
   );
 };
