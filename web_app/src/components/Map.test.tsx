@@ -22,7 +22,8 @@ describe("Map", () => {
 
   beforeEach(() => {
     mockPoiGateway = {
-      fetchNear: jest.fn().mockResolvedValue(buildings),
+      fetchNear: jest.fn(),
+      fetchWithin: jest.fn().mockResolvedValue(buildings),
     };
   });
 
@@ -36,7 +37,7 @@ describe("Map", () => {
     render(<Map centre={mapCentre} poiGateway={mockPoiGateway} />);
 
     await waitFor(() => {
-      expect(mockPoiGateway.fetchNear).toHaveBeenCalledWith(mapCentre);
+      expect(mockPoiGateway.fetchWithin).toHaveBeenCalled();
     });
   });
 
@@ -65,6 +66,17 @@ describe("Map", () => {
       expect(screen.getByText(poi.properties.grade, { exact: false }));
     });
   });
+
+  it("displays an alert rather than display too many markers", async () => {
+    render(
+      <Map centre={mapCentre} poiGateway={mockPoiGateway} maxMarkerCount={2} />
+    );
+
+    await waitFor(() =>
+      expect(screen.queryByAltText("Listed building")).toBeNull()
+    );
+    expect(screen.getByRole("alert")).toHaveTextContent(/too many/i);
+  });
 });
 
 const buildings: IPointOfInterest[] = [
@@ -89,5 +101,16 @@ const buildings: IPointOfInterest[] = [
       hyperlink: "https://en.wikipedia.org/wiki/Batman",
     },
     geometry: { type: Shapes.Point, coordinates: [51.4755209, -2.6083328] },
+  },
+  {
+    id: "3",
+    properties: {
+      name: "The Liver Buildings",
+      listEntry: 64,
+      location: "Albert Dock, Liverpool",
+      grade: BuildingGrades.one,
+      hyperlink: "https://en.wikipedia.org/wiki/Royal_Liver_Building",
+    },
+    geometry: { type: Shapes.Point, coordinates: [53.4058, -2.9958] },
   },
 ];

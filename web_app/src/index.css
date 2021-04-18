@@ -21,6 +21,11 @@ code {
   filter: grayscale(100%)
 }
 
+.alert .leaflet-popup-content-wrapper {
+  background: antiquewhite;
+}
+
+/* Turn off inverted triangle below all popups */
 .leaflet-popup-tip {
   width: 0;
   height: 0;

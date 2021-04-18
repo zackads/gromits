@@ -16,17 +16,20 @@ import { IPointOfInterest } from "../lib/entities/IPointOfInterest";
 import { IPoiGateway } from "../lib/gateways/IPoiGateway";
 import { buildingIcon } from "./icons/BuildingIcons";
 import { LoadingSpinner } from "./LoadingSpinner";
+import { Alert } from "./Alert";
 import { LatLngBounds } from "leaflet";
 import { Polygon } from "../lib/entities/Polygon";
 
 interface MapProps {
   centre: LatLng;
   poiGateway: IPoiGateway;
+  maxMarkerCount?: Number;
 }
 
 export const Map: FunctionComponent<MapProps> = ({
   centre,
   poiGateway,
+  maxMarkerCount = 1000,
 }: MapProps): JSX.Element => {
   return (
     <MapContainer
@@ -35,13 +38,14 @@ export const Map: FunctionComponent<MapProps> = ({
       style={{ height: "100vh", width: "100%" }}
       tap={false}
     >
-      <POIMap poiGateway={poiGateway} />
+      <POIMap poiGateway={poiGateway} maxMarkerCount={maxMarkerCount} />
     </MapContainer>
   );
 };
 
 interface POIMapProps {
   poiGateway: IPoiGateway;
+  maxMarkerCount: Number;
 }
 
 interface BuildingsState {
@@ -52,6 +56,7 @@ interface BuildingsState {
 
 const POIMap: FunctionComponent<POIMapProps> = ({
   poiGateway,
+  maxMarkerCount,
 }: POIMapProps): JSX.Element => {
   const [buildings, setBuildings] = useState<BuildingsState>({
     isLoading: false,
@@ -98,7 +103,11 @@ const POIMap: FunctionComponent<POIMapProps> = ({
         className="greyscale"
       />
       {buildings.isLoading && <LoadingSpinner>Loading...</LoadingSpinner>}
-      <BuildingMarkers buildings={buildings.points} />
+      {buildings.points.length > maxMarkerCount ? (
+        <Alert> Uh-oh! Too many buildings. Try zooming in.</Alert>
+      ) : (
+        <BuildingMarkers buildings={buildings.points} />
+      )}
     </>
   );
 };
