@@ -6,15 +6,8 @@ const queryDb = (db, query) =>
     .find(query)
     .toArray()
     .then((buildings) => {
-      console.log(buildings[0]);
-      return {
-        statusCode: 200,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Credentials": true,
-        },
-        body: JSON.stringify(buildings.map(transform)),
-      };
+      console.log("=> first building found: ", buildings[0]);
+      return buildings.map(transform);
     })
     .catch((error) => {
       console.log("=> an error occurred: ", error);

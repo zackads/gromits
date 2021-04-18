@@ -15,7 +15,17 @@ module.exports.handler = (event, context, callback) => {
       connectToDatabase()
         .then((db) => getBuildingsNear(db, location))
         .then((result) => {
-          callback(null, result);
+          const response = {
+            statusCode: 200,
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Credentials": true,
+            },
+            body: JSON.stringify({
+              data: result,
+            }),
+          };
+          callback(null, response);
         })
         .catch((error) => {
           console.log("=> an error occurred: ", error);
@@ -30,7 +40,17 @@ module.exports.handler = (event, context, callback) => {
       connectToDatabase()
         .then((db) => getBuildingsWithin(db, polygon))
         .then((result) => {
-          callback(null, result);
+          const response = {
+            statusCode: 200,
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Credentials": true,
+            },
+            body: JSON.stringify({
+              data: result,
+            }),
+          };
+          callback(null, response);
         })
         .catch((error) => {
           console.log("=> an error occurred: ", error);
