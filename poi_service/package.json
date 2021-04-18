@@ -4,8 +4,8 @@
   "description": "API serving listed buildings in England",
   "main": "handler.js",
   "scripts": {
-    "test": "jest --watch",
-    "test:ci": "jest"
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "keywords": [],
   "author": "",
