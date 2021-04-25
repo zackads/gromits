@@ -134,7 +134,6 @@ const BuildingMarkers = ({ buildings }: BuildingMarkersProps): JSX.Element => (
           <a
             href={building.properties.hyperlink}
             target="_blank"
-            rel="noreferrer"
           >
             Check it out
           </a>
