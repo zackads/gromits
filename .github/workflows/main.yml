@@ -35,12 +35,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
-          with:
-            node-version: 14
+        with:
+          node-version: 14
       - uses: actions/cache@v2.1.5
-          with:
-            path: "**/node_modules"
-            key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       - name: npm run test
         run: npm run test
 
