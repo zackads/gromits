@@ -69,7 +69,11 @@ describe("Map", () => {
 
   it("displays an alert rather than display too many markers", async () => {
     render(
-      <Map centre={mapCentre} poiGateway={mockPoiGateway} maxMarkerCount={2} />
+      <Map
+        centre={mapCentre}
+        poiGateway={mockPoiGateway}
+        markerOptions={{ maxCount: 2, tooManyMessage: "too many" }}
+      />
     );
 
     await waitFor(() =>

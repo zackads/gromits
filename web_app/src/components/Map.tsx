@@ -28,15 +28,20 @@ export interface IMarkerOptions {
 export interface IMapProps {
   centre: LatLng;
   poiGateway: IPoiGateway;
-  children: React.ReactNode;
-  markerOptions: IMarkerOptions;
+  markerOptions?: IMarkerOptions;
+  children?: React.ReactNode;
+}
+
+const defaultMarkerOptions = {
+  maxCount: 500,
+  tooManyMessage: "Uh-oh!  Too many buildings.  Try zooming in."
 }
 
 export const Map: FunctionComponent<IMapProps> = ({
   centre,
   poiGateway,
   children,
-  markerOptions,
+  markerOptions = defaultMarkerOptions,
 }: IMapProps): JSX.Element => {
   return (
     <MapContainer
