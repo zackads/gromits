@@ -20,19 +20,24 @@ import { Alert } from "./Alert";
 import { LatLngBounds } from "leaflet";
 import { Polygon } from "../lib/entities/Polygon";
 
-interface MapProps {
-  centre: LatLng;
-  poiGateway: IPoiGateway;
-  maxMarkerCount?: Number;
-  children: React.ReactNode;
+export interface IMarkerOptions {
+  maxCount: number;
+  tooManyMessage: string;
 }
 
-export const Map: FunctionComponent<MapProps> = ({
+export interface IMapProps {
+  centre: LatLng;
+  poiGateway: IPoiGateway;
+  children: React.ReactNode;
+  markerOptions: IMarkerOptions;
+}
+
+export const Map: FunctionComponent<IMapProps> = ({
   centre,
   poiGateway,
   children,
-  maxMarkerCount = 1000,
-}: MapProps): JSX.Element => {
+  markerOptions,
+}: IMapProps): JSX.Element => {
   return (
     <MapContainer
       center={centre}
@@ -41,27 +46,27 @@ export const Map: FunctionComponent<MapProps> = ({
       tap={false}
     >
       {children}
-      <POIMap poiGateway={poiGateway} maxMarkerCount={maxMarkerCount} />
+      <POIMap poiGateway={poiGateway} markerOptions={markerOptions} />
     </MapContainer>
   );
 };
 
-interface POIMapProps {
+interface IPOIMapProps {
   poiGateway: IPoiGateway;
-  maxMarkerCount: Number;
+  markerOptions: IMarkerOptions;
 }
 
-interface BuildingsState {
+interface IBuildingsState {
   isLoading: boolean;
   error: boolean;
   points: IPointOfInterest[];
 }
 
-const POIMap: FunctionComponent<POIMapProps> = ({
+const POIMap: FunctionComponent<IPOIMapProps> = ({
   poiGateway,
-  maxMarkerCount,
-}: POIMapProps): JSX.Element => {
-  const [state, setState] = useState<BuildingsState>({
+  markerOptions,
+}: IPOIMapProps): JSX.Element => {
+  const [state, setState] = useState<IBuildingsState>({
     isLoading: true,
     error: false,
     points: [],
@@ -105,8 +110,8 @@ const POIMap: FunctionComponent<POIMapProps> = ({
         className="greyscale"
       />
       {state.isLoading && <LoadingSpinner>Loading...</LoadingSpinner>}
-      {state.points.length > maxMarkerCount ? (
-        <Alert> Uh-oh! Too many buildings. Try zooming in.</Alert>
+      {state.points.length > markerOptions.maxCount ? (
+        <Alert>{markerOptions.tooManyMessage}</Alert>
       ) : (
         <BuildingMarkers buildings={state.points} />
       )}
@@ -128,7 +133,7 @@ const BuildingMarkers = ({ buildings }: BuildingMarkersProps): JSX.Element => (
         title={building.properties.name}
         icon={buildingIcon(building)}
       >
-        <Popup key={building.id}>
+        <Popup key={building.id} autoClose={false}>
           <h2>{building.properties.name}</h2>
           <h3>Grade {building.properties.grade}</h3>
           <a

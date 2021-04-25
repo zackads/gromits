@@ -10,6 +10,7 @@ export const Alert: FunctionComponent = ({ children }) => {
       autoPan={false}
       closeButton={false}
       className="alert"
+      autoClose={false}
     >
       <div role="alert">{children}</div>
     </Popup>

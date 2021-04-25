@@ -22,7 +22,7 @@ code {
 }
 
 .alert .leaflet-popup-content-wrapper {
-  background: antiquewhite;
+  background: whitesmoke;
 }
 
 /* Turn off inverted triangle below all popups */
