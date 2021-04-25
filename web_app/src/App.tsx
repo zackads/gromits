@@ -3,6 +3,7 @@ import { IMarkerOptions, Map } from "./components/Map";
 import { BuildingsGateway } from "./lib/gateways/BuildingsGateway";
 import { LocateControl } from "./components/controls/LocateControl";
 import { SearchControl } from "./components/controls/SearchControl";
+import { FullscreenControl } from "./components/controls/FullscreenControl";
 
 const App: FunctionComponent = (): JSX.Element => {
   const markerOptions: IMarkerOptions = {
@@ -16,7 +17,7 @@ const App: FunctionComponent = (): JSX.Element => {
       centre={[51.454095, -2.595995]}
       markerOptions={markerOptions}
     >
-      <LocateControl />, <SearchControl />
+      <FullscreenControl />, <LocateControl />, <SearchControl />,
     </Map>
   );
 };
