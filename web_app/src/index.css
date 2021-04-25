@@ -25,6 +25,11 @@ code {
   background: whitesmoke;
 }
 
+.alert > .leaflet-popup-tip-container {
+  width: 0;
+  height: 0;
+}
+
 /* Loading spinner */
 .lds-dual-ring {
   display: inline-block;
@@ -56,6 +61,11 @@ code {
 .loading-popup .leaflet-popup-content-wrapper {
   background: none;
   box-shadow: none;
+}
+
+.loading-popup > .leaflet-popup-tip-container {
+  width: 0;
+  height: 0;
 }
 
 /* Loading spinner */
