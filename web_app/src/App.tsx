@@ -7,7 +7,7 @@ class App extends Component {
     return (
       <Map
         poiGateway={new BuildingsGateway()}
-        centre={[51.4846117, -0.0072328]}
+        centre={[51.454095, -2.595995]}
       />
     );
   }
