@@ -19,7 +19,7 @@ import { LoadingSpinner } from "./LoadingSpinner";
 import { Alert } from "./Alert";
 import { LatLngBounds } from "leaflet";
 import { Polygon } from "../lib/entities/Polygon";
-import { LocateControl } from "./LocateControl";
+import { LocateControl } from "./controls/LocateControl";
 
 interface MapProps {
   centre: LatLng;
@@ -69,14 +69,6 @@ const POIMap: FunctionComponent<POIMapProps> = ({
     moveend() {
       fetchBuildings();
     },
-    locationfound(e) {
-      map.flyTo(e.latlng, map.getZoom());
-      setState({ ...state, isLoading: true });
-    },
-    locationerror(e) {
-      console.log(e);
-      fetchBuildings();
-    },
   });
 
   const fetchBuildings = useCallback(async () => {
@@ -100,7 +92,6 @@ const POIMap: FunctionComponent<POIMapProps> = ({
 
   // Run on first render only
   useEffect((): void => {
-    map.locate();
     fetchBuildings();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
