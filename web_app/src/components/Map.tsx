@@ -75,6 +75,10 @@ const POIMap: FunctionComponent<IPOIMapProps> = ({
     moveend() {
       fetchBuildings();
     },
+    popupopen(e) {
+      var markerLocation = map.project(e.target._popup._latlng);
+      map.flyTo(map.unproject(markerLocation));
+    },
   });
 
   const fetchBuildings = useCallback(async () => {
@@ -136,10 +140,7 @@ const BuildingMarkers = ({ buildings }: BuildingMarkersProps): JSX.Element => (
         <Popup key={building.id} autoClose={false}>
           <h2>{building.properties.name}</h2>
           <h3>Grade {building.properties.grade}</h3>
-          <a
-            href={building.properties.hyperlink}
-            target="_blank"
-          >
+          <a href={building.properties.hyperlink} target="_blank" rel="noreferrer">
             Check it out
           </a>
         </Popup>
