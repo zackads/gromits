@@ -19,6 +19,7 @@ import { LoadingSpinner } from "./LoadingSpinner";
 import { Alert } from "./Alert";
 import { LatLngBounds } from "leaflet";
 import { Polygon } from "../lib/entities/Polygon";
+import { LocateControl } from "./LocateControl";
 
 interface MapProps {
   centre: LatLng;
@@ -38,6 +39,7 @@ export const Map: FunctionComponent<MapProps> = ({
       style={{ height: "100vh", width: "100%" }}
       tap={false}
     >
+      <LocateControl />
       <POIMap poiGateway={poiGateway} maxMarkerCount={maxMarkerCount} />
     </MapContainer>
   );

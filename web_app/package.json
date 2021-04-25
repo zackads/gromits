@@ -14,6 +14,7 @@
     "axios": "^0.21.1",
     "dotenv": "^8.2.0",
     "leaflet": "^1.7.1",
+    "leaflet.locatecontrol": "^0.73.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-leaflet": "^3.1.0",
@@ -47,6 +48,7 @@
     ]
   },
   "devDependencies": {
+    "@types/leaflet.locatecontrol": "^0.60.7",
     "prettier": "^2.2.1"
   }
 }
