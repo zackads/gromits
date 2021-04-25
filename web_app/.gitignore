@@ -1,9 +1,0 @@
-.env
-build/
-node_modules/
-
-# Terraform
-.terraform
-terraform.d
-node_modules
-terraform.tfstate*

@@ -7,7 +7,7 @@ import { FullscreenControl } from "./components/controls/FullscreenControl";
 
 const App: FunctionComponent = (): JSX.Element => {
   const markerOptions: IMarkerOptions = {
-    maxCount: 1000,
+    maxCount: 500,
     tooManyMessage: "Uh-oh - too many buildings!  Try zooming in.",
   };
 
