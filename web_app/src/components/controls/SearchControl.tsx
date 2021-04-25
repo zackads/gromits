@@ -1,14 +1,23 @@
 import { createControlComponent } from "@react-leaflet/core";
-import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch";
-import "../../../node_modules/leaflet-geosearch/dist/geosearch.css";
+import L from "leaflet";
+import "leaflet-control-geocoder";
+import { useMap } from "react-leaflet";
 
-const provider = new OpenStreetMapProvider();
-
-// @ts-ignore
-const searchControl = new GeoSearchControl({
-  provider: provider,
-  retainZoomLevel: true,
-  autoClose: true,
+export const SearchControl = createControlComponent((props) => {
+  const map = useMap();
+  // @ts-ignore
+  return new L.Control.Geocoder({
+    position: "topleft",
+    defaultMarkGeocode: false,
+  }).on(
+    "markgeocode",
+    function (e: {
+      geocode: {
+        center: L.LatLngLiteral | L.LatLngTuple;
+        name: ((layer: L.Layer) => L.Content) | L.Content | L.Popup;
+      };
+    }) {
+      map.flyTo(e.geocode.center);
+    }
+  );
 });
-
-export const SearchControl = createControlComponent((props) => searchControl);
