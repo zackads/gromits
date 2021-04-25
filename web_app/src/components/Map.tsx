@@ -19,17 +19,18 @@ import { LoadingSpinner } from "./LoadingSpinner";
 import { Alert } from "./Alert";
 import { LatLngBounds } from "leaflet";
 import { Polygon } from "../lib/entities/Polygon";
-import { LocateControl } from "./controls/LocateControl";
 
 interface MapProps {
   centre: LatLng;
   poiGateway: IPoiGateway;
   maxMarkerCount?: Number;
+  children: React.ReactNode;
 }
 
 export const Map: FunctionComponent<MapProps> = ({
   centre,
   poiGateway,
+  children,
   maxMarkerCount = 1000,
 }: MapProps): JSX.Element => {
   return (
@@ -39,7 +40,7 @@ export const Map: FunctionComponent<MapProps> = ({
       style={{ height: "100vh", width: "100%" }}
       tap={false}
     >
-      <LocateControl />
+      {children}
       <POIMap poiGateway={poiGateway} maxMarkerCount={maxMarkerCount} />
     </MapContainer>
   );
