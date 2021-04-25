@@ -29,6 +29,8 @@ jobs:
         run: npm install
       - name: npm run test
         run: npm run test
+      - name: npm run build
+        run: npm run build
       - uses: hashicorp/setup-terraform@v1
       - name: terraform init
         working-directory: terraform
