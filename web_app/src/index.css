@@ -25,12 +25,6 @@ code {
   background: whitesmoke;
 }
 
-/* Turn off inverted triangle below all popups */
-.leaflet-popup-tip {
-  width: 0;
-  height: 0;
-}
-
 /* Loading spinner */
 .lds-dual-ring {
   display: inline-block;
