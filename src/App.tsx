@@ -4,8 +4,16 @@ import { BuildingsGateway } from "./lib/gateways/BuildingsGateway";
 import { LocateControl } from "./components/controls/LocateControl";
 import { SearchControl } from "./components/controls/SearchControl";
 import { FullscreenControl } from "./components/controls/FullscreenControl";
+import { MapContainerProps } from "react-leaflet";
 
 const App: FunctionComponent = (): JSX.Element => {
+  const mapOptions: MapContainerProps = {
+    center: [51.454095, -2.595995],
+    zoom: 16,
+    minZoom: 10,
+    maxZoom: 20,
+  };
+
   const markerOptions: IMarkerOptions = {
     maxCount: 500,
     tooManyMessage: "Uh-oh - too many buildings!  Try zooming in.",
@@ -14,7 +22,7 @@ const App: FunctionComponent = (): JSX.Element => {
   return (
     <Map
       poiGateway={new BuildingsGateway()}
-      centre={[51.454095, -2.595995]}
+      mapOptions={mapOptions}
       markerOptions={markerOptions}
     >
       <FullscreenControl />, <LocateControl />, <SearchControl />,

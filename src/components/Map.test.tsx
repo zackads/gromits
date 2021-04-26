@@ -28,13 +28,13 @@ describe("Map", () => {
   });
 
   it("displays a loading message while it gets POI markers", async () => {
-    render(<Map centre={mapCentre} poiGateway={mockPoiGateway} />);
+    render(<Map poiGateway={mockPoiGateway} />);
 
     expect(await screen.findByRole("progressbar")).toBeVisible();
   });
 
   it("queries the injected poiGateway for POI markers to display", async () => {
-    render(<Map centre={mapCentre} poiGateway={mockPoiGateway} />);
+    render(<Map poiGateway={mockPoiGateway} />);
 
     await waitFor(() => {
       expect(mockPoiGateway.fetchWithin).toHaveBeenCalled();
@@ -42,13 +42,13 @@ describe("Map", () => {
   });
 
   it("hides the loading message when POI markers are displayed", async () => {
-    render(<Map centre={mapCentre} poiGateway={mockPoiGateway} />);
+    render(<Map poiGateway={mockPoiGateway} />);
 
     await waitForElementToBeRemoved(() => screen.getByRole("progressbar"));
   });
 
   it("user can see points of interest", async () => {
-    render(<Map centre={mapCentre} poiGateway={mockPoiGateway} />);
+    render(<Map poiGateway={mockPoiGateway} />);
 
     expect(await screen.findAllByAltText("Listed building")).toHaveLength(
       buildings.length
@@ -58,7 +58,7 @@ describe("Map", () => {
   it("user can click on a point of interest to see its relevant properties", async () => {
     const poi = buildings[0];
 
-    render(<Map centre={mapCentre} poiGateway={mockPoiGateway} />);
+    render(<Map poiGateway={mockPoiGateway} />);
 
     await waitFor(() => {
       screen.getByTitle(poi.properties.name).click();
@@ -70,7 +70,6 @@ describe("Map", () => {
   it("displays an alert rather than display too many markers", async () => {
     render(
       <Map
-        centre={mapCentre}
         poiGateway={mockPoiGateway}
         markerOptions={{ maxCount: 2, tooManyMessage: "too many" }}
       />

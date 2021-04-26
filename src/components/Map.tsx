@@ -10,14 +10,14 @@ import {
   Popup,
   TileLayer,
   useMapEvents,
+  MapContainerProps,
 } from "react-leaflet";
-import { LatLng } from "../lib/entities/LatLng";
 import { IPointOfInterest } from "../lib/entities/IPointOfInterest";
 import { IPoiGateway } from "../lib/gateways/IPoiGateway";
 import { buildingIcon } from "./icons/BuildingIcons";
 import { LoadingSpinner } from "./LoadingSpinner";
 import { Alert } from "./Alert";
-import { LatLngBounds } from "leaflet";
+import { LatLng, LatLngBounds } from "leaflet";
 import { Polygon } from "../lib/entities/Polygon";
 
 export interface IMarkerOptions {
@@ -26,27 +26,33 @@ export interface IMarkerOptions {
 }
 
 export interface IMapProps {
-  centre: LatLng;
   poiGateway: IPoiGateway;
+  mapOptions?: MapContainerProps;
   markerOptions?: IMarkerOptions;
   children?: React.ReactNode;
 }
 
+const defaultMapOptions = {
+  center: new LatLng(51.454095, -2.595995),
+  zoom: 16,
+  minZoom: 10,
+  maxZoom: 20,
+};
+
 const defaultMarkerOptions = {
   maxCount: 500,
-  tooManyMessage: "Uh-oh!  Too many buildings.  Try zooming in."
-}
+  tooManyMessage: "Uh-oh!  Too many buildings.  Try zooming in.",
+};
 
 export const Map: FunctionComponent<IMapProps> = ({
-  centre,
   poiGateway,
-  children,
+  mapOptions = defaultMapOptions,
   markerOptions = defaultMarkerOptions,
+  children,
 }: IMapProps): JSX.Element => {
   return (
     <MapContainer
-      center={centre}
-      zoom={16}
+      {...mapOptions}
       style={{ height: "100vh", width: "100%" }}
       tap={false}
     >
@@ -117,6 +123,8 @@ const POIMap: FunctionComponent<IPOIMapProps> = ({
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         className="greyscale"
+        maxNativeZoom={19}
+        maxZoom={30}
       />
       {state.isLoading && <LoadingSpinner>Loading...</LoadingSpinner>}
       {state.points.length > markerOptions.maxCount ? (
@@ -142,10 +150,14 @@ const BuildingMarkers = ({ buildings }: BuildingMarkersProps): JSX.Element => (
         title={building.properties.name}
         icon={buildingIcon(building)}
       >
-        <Popup key={building.id} autoClose={false}>
+        <Popup key={building.id} autoClose={false} autoPan={false}>
           <h2>{building.properties.name}</h2>
           <h3>Grade {building.properties.grade}</h3>
-          <a href={building.properties.hyperlink} target="_blank" rel="noreferrer">
+          <a
+            href={building.properties.hyperlink}
+            target="_blank"
+            rel="noreferrer"
+          >
             Check it out
           </a>
         </Popup>
