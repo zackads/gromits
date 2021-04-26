@@ -1,3 +1,4 @@
+import { LatLng, LatLngBounds } from "leaflet";
 import React, {
   FunctionComponent,
   useCallback,
@@ -6,19 +7,18 @@ import React, {
 } from "react";
 import {
   MapContainer,
+  MapContainerProps,
   Marker,
   Popup,
   TileLayer,
   useMapEvents,
-  MapContainerProps,
 } from "react-leaflet";
 import { IPointOfInterest } from "../lib/entities/IPointOfInterest";
+import { Polygon } from "../lib/entities/Polygon";
 import { IPoiGateway } from "../lib/gateways/IPoiGateway";
+import { Alert } from "./Alert";
 import { buildingIcon } from "./icons/BuildingIcons";
 import { LoadingSpinner } from "./LoadingSpinner";
-import { Alert } from "./Alert";
-import { LatLng, LatLngBounds } from "leaflet";
-import { Polygon } from "../lib/entities/Polygon";
 
 export interface IMarkerOptions {
   maxCount: number;

@@ -1,6 +1,6 @@
 import { LatLng } from "../entities/LatLng";
-import { BuildingsGateway } from "./BuildingsGateway";
 import { Polygon } from "../entities/Polygon";
+import { BuildingsGateway } from "./BuildingsGateway";
 
 const axios = require("axios");
 

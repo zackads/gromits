@@ -1,8 +1,8 @@
 import axios from "axios";
-import { IPoiGateway } from "./IPoiGateway";
 import { IPointOfInterest } from "../entities/IPointOfInterest";
 import { LatLng } from "../entities/LatLng";
 import { Polygon } from "../entities/Polygon";
+import { IPoiGateway } from "./IPoiGateway";
 
 export class BuildingsGateway implements IPoiGateway {
   private readonly POI_SERVICE_URI =

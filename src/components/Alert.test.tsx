@@ -1,7 +1,7 @@
-import { Alert } from "./Alert";
 import { render, screen } from "@testing-library/react";
-import { MapContainer } from "react-leaflet";
 import React, { FunctionComponent } from "react";
+import { MapContainer } from "react-leaflet";
+import { Alert } from "./Alert";
 
 export const TestMapContainer: FunctionComponent = ({
   children,

@@ -1,10 +1,10 @@
 import React, { FunctionComponent } from "react";
-import { IMarkerOptions, Map } from "./components/Map";
-import { BuildingsGateway } from "./lib/gateways/BuildingsGateway";
+import { MapContainerProps } from "react-leaflet";
+import { FullscreenControl } from "./components/controls/FullscreenControl";
 import { LocateControl } from "./components/controls/LocateControl";
 import { SearchControl } from "./components/controls/SearchControl";
-import { FullscreenControl } from "./components/controls/FullscreenControl";
-import { MapContainerProps } from "react-leaflet";
+import { IMarkerOptions, Map } from "./components/Map";
+import { BuildingsGateway } from "./lib/gateways/BuildingsGateway";
 
 const App: FunctionComponent = (): JSX.Element => {
   const mapOptions: MapContainerProps = {

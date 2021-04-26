@@ -1,19 +1,18 @@
-import React from "react";
 import {
   render,
   screen,
   waitFor,
   waitForElementToBeRemoved,
 } from "@testing-library/react";
-import { Map } from "./Map";
-
-import { LatLng } from "../lib/entities/LatLng";
+import React from "react";
 import {
   BuildingGrades,
   IPointOfInterest,
   Shapes,
 } from "../lib/entities/IPointOfInterest";
+import { LatLng } from "../lib/entities/LatLng";
 import { IPoiGateway } from "../lib/gateways/IPoiGateway";
+import { Map } from "./Map";
 
 describe("Map", () => {
   const mapCentre: LatLng = [51.484573, -0.007307];

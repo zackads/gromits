@@ -52,6 +52,7 @@
   "devDependencies": {
     "@types/leaflet.fullscreen": "^1.6.0",
     "@types/leaflet.locatecontrol": "^0.60.7",
-    "prettier": "^2.2.1"
+    "prettier": "^2.2.1",
+    "prettier-plugin-organize-imports": "^1.1.1"
   }
 }

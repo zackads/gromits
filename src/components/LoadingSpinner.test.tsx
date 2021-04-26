@@ -1,7 +1,7 @@
-import { LoadingSpinner } from "./LoadingSpinner";
 import { render, screen } from "@testing-library/react";
-import { MapContainer } from "react-leaflet";
 import React, { FunctionComponent } from "react";
+import { MapContainer } from "react-leaflet";
+import { LoadingSpinner } from "./LoadingSpinner";
 
 export const TestMapContainer: FunctionComponent = ({
   children,
