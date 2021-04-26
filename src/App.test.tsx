@@ -1,7 +1,7 @@
-import { render } from '@testing-library/react';
-import App from './App';
+import { render } from "@testing-library/react";
+import App from "./App";
 
-test('renders', () => {
+test("renders", () => {
   const behaviour = () => render(<App />);
   expect(behaviour).not.toThrow(new Error());
 });
