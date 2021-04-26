@@ -3,6 +3,5 @@ import L from "leaflet";
 import "leaflet.locatecontrol";
 
 export const LocateControl = createControlComponent((props) => L.control.locate({
-    flyTo: true,
     keepCurrentZoomLevel: true
 }));

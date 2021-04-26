@@ -17,7 +17,7 @@ export const SearchControl = createControlComponent((props) => {
         name: ((layer: L.Layer) => L.Content) | L.Content | L.Popup;
       };
     }) {
-      map.flyTo(e.geocode.center);
+      map.panTo(e.geocode.center);
     }
   );
 });
