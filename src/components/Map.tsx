@@ -53,7 +53,6 @@ export const Map: FunctionComponent<IMapProps> = ({
   return (
     <MapContainer
       {...mapOptions}
-      style={{ height: "100vh", width: "100%" }}
       tap={false}
     >
       {children}
