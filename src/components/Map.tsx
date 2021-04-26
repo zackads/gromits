@@ -51,10 +51,7 @@ export const Map: FunctionComponent<IMapProps> = ({
   children,
 }: IMapProps): JSX.Element => {
   return (
-    <MapContainer
-      {...mapOptions}
-      tap={false}
-    >
+    <MapContainer {...mapOptions} tap={false}>
       {children}
       <POIMap poiGateway={poiGateway} markerOptions={markerOptions} />
     </MapContainer>

@@ -1,4 +1,6 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-npm test -- --silent --watchAll=false
+npx lint-staged
+npm test -- --watchAll=false
+

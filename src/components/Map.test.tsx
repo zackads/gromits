@@ -10,13 +10,10 @@ import {
   IPointOfInterest,
   Shapes,
 } from "../lib/entities/IPointOfInterest";
-import { LatLng } from "../lib/entities/LatLng";
 import { IPoiGateway } from "../lib/gateways/IPoiGateway";
 import { Map } from "./Map";
 
 describe("Map", () => {
-  const mapCentre: LatLng = [51.484573, -0.007307];
-
   let mockPoiGateway: IPoiGateway;
 
   beforeEach(() => {
@@ -61,8 +58,12 @@ describe("Map", () => {
 
     await waitFor(() => {
       screen.getByTitle(poi.properties.name).click();
-      expect(screen.getByText(poi.properties.name, { exact: false }));
-      expect(screen.getByText(poi.properties.grade, { exact: false }));
+      expect(
+        screen.getByText(poi.properties.name, { exact: false })
+      ).toBeVisible();
+      expect(
+        screen.getByText(poi.properties.grade, { exact: false })
+      ).toBeVisible();
     });
   });
 
