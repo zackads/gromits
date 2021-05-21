@@ -1,16 +1,24 @@
 resource "aws_cloudfront_distribution" "s3_distribution" {
   origin {
+    origin_id = var.domain
     domain_name = aws_s3_bucket.prod.bucket_regional_domain_name
-    origin_id = var.name
   }
+
+  aliases = [
+    var.domain]
 
   enabled = true
   default_root_object = "index.html"
 
   default_cache_behavior {
-    allowed_methods = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
-    cached_methods = ["GET", "HEAD"]
-    target_origin_id = var.name
+    allowed_methods = [
+      "GET",
+      "HEAD",
+      "OPTIONS"]
+    cached_methods = [
+      "GET",
+      "HEAD"]
+    target_origin_id = var.domain
 
     forwarded_values {
       query_string = true
