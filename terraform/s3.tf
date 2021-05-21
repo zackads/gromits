@@ -2,6 +2,8 @@ resource "aws_s3_bucket" "prod" {
   bucket = var.domain
   acl = "public-read"
 
+  force_destroy = true
+
   cors_rule {
     allowed_headers = [
       "*"]
