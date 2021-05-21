@@ -11,9 +11,58 @@ defaults:
     shell: bash
 
 jobs:
-  deploy:
-    name: Build, test and deploy
+  test:
+    name: Test
     runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - name: npm install
+        run: npm install
+      - name: npm run test
+        run: npm run test
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - name: npm install
+        run: npm install
+      - name: npm run build
+        run: npm run build
+
+  infra:
+    name: Create/update infrastructure
+    runs-on: ubuntu-latest
+    needs: [ test, build ]
+
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: eu-west-2
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: hashicorp/setup-terraform@v1
+      - name: terraform init
+        working-directory: terraform
+        run: terraform init
+      - name: terraform apply
+        working-directory: terraform
+        run: terraform apply -auto-approve -var-file=config.tfvars
+
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    needs: [ infra ]
 
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -31,12 +80,5 @@ jobs:
         run: npm run test
       - name: npm run build
         run: npm run build
-      - uses: hashicorp/setup-terraform@v1
-      - name: terraform init
-        working-directory: terraform
-        run: terraform init
-      - name: terraform apply
-        working-directory: terraform
-        run: terraform apply -auto-approve -var-file=config.tfvars
       - name: Deploy to S3
         run: aws s3 sync build s3://gromits-webapp
