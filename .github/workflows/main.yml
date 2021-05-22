@@ -81,4 +81,4 @@ jobs:
       - name: npm run build
         run: npm run build
       - name: Deploy to S3
-        run: aws s3 sync build s3://gromits-webapp
+        run: aws s3 sync build s3://landmarkist.com
