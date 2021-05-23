@@ -5,7 +5,8 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   }
 
   aliases = [
-    var.domain]
+    var.domain,
+    "www.${var.domain}"]
   is_ipv6_enabled = true
   enabled = true
   default_root_object = "index.html"
