@@ -1,14 +1,15 @@
 resource "aws_cloudfront_distribution" "s3_distribution" {
   origin {
-    origin_id = var.domain
     domain_name = aws_s3_bucket.prod.bucket_regional_domain_name
+    origin_id = var.domain
   }
 
   aliases = [
     var.domain]
-
+  is_ipv6_enabled = true
   enabled = true
   default_root_object = "index.html"
+  price_class = "PriceClass_100"
 
   default_cache_behavior {
     allowed_methods = [
@@ -34,17 +35,15 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     max_ttl = 86400
   }
 
-  price_class = "PriceClass_100"
-
   restrictions {
     geo_restriction {
-      restriction_type = "whitelist"
-      locations = [
-        "GB"]
+      restriction_type = "none"
+      locations = []
     }
   }
 
   viewer_certificate {
-    cloudfront_default_certificate = true
+    acm_certificate_arn = aws_acm_certificate_validation.default.certificate_arn
+    ssl_support_method = "sni-only"
   }
 }
