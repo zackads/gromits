@@ -1,6 +1,4 @@
-import { LatLng } from "./LatLng";
-
-interface IListedBuilding {
+interface ListedBuilding {
   name: string;
   listEntry: number;
   location: string;
@@ -8,15 +6,15 @@ interface IListedBuilding {
   hyperlink: string;
 }
 
-interface IGeometry {
+interface Geometry {
   type: Shapes;
   coordinates: LatLng;
 }
 
-export interface IPointOfInterest {
+export interface Landmark {
   id: string;
-  properties: IListedBuilding;
-  geometry: IGeometry;
+  properties: ListedBuilding;
+  geometry: Geometry;
 }
 
 export enum BuildingGrades {

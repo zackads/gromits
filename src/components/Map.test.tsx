@@ -5,20 +5,15 @@ import {
   waitForElementToBeRemoved,
 } from "@testing-library/react";
 import React from "react";
-import {
-  BuildingGrades,
-  IPointOfInterest,
-  Shapes,
-} from "../lib/entities/IPointOfInterest";
-import { IPoiGateway } from "../lib/gateways/IPoiGateway";
+import { BuildingGrades, Landmark, Shapes } from "../lib/entities/Landmark";
+import { LandmarkGateway } from "../lib/gateways/LandmarkGateway";
 import { Map } from "./Map";
 
 describe("Map", () => {
-  let mockPoiGateway: IPoiGateway;
+  let mockPoiGateway: LandmarkGateway;
 
   beforeEach(() => {
     mockPoiGateway = {
-      fetchNear: jest.fn(),
       fetchWithin: jest.fn().mockResolvedValue(buildings),
     };
   });
@@ -82,7 +77,7 @@ describe("Map", () => {
   });
 });
 
-const buildings: IPointOfInterest[] = [
+const buildings: Landmark[] = [
   {
     id: "1",
     properties: {

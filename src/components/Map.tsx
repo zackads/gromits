@@ -1,23 +1,11 @@
-import { LatLng, LatLngBounds } from "leaflet";
-import React, {
-  FunctionComponent,
-  useCallback,
-  useEffect,
-  useState,
-} from "react";
-import {
-  MapContainer,
-  MapContainerProps,
-  Marker,
-  Popup,
-  TileLayer,
-  useMapEvents,
-} from "react-leaflet";
-import { IPointOfInterest } from "../lib/entities/IPointOfInterest";
+import { LatLngBounds } from "leaflet";
+import { FunctionComponent, useCallback, useEffect, useState } from "react";
+import { MapContainer, TileLayer, useMapEvents } from "react-leaflet";
+import { Landmark } from "../lib/entities/Landmark";
 import { Polygon } from "../lib/entities/Polygon";
-import { IPoiGateway } from "../lib/gateways/IPoiGateway";
+import { LandmarkGateway } from "../lib/gateways/LandmarkGateway";
 import { Alert } from "./Alert";
-import { buildingIcon } from "./icons/BuildingIcons";
+import { BuildingMarkers } from "./BuildingMarkers";
 import { LoadingSpinner } from "./LoadingSpinner";
 
 export interface IMarkerOptions {
@@ -25,15 +13,17 @@ export interface IMarkerOptions {
   tooManyMessage: string;
 }
 
+class MapContainerProps {}
+
 export interface IMapProps {
-  poiGateway: IPoiGateway;
+  poiGateway: LandmarkGateway;
   mapOptions?: MapContainerProps;
   markerOptions?: IMarkerOptions;
   children?: React.ReactNode;
 }
 
 const defaultMapOptions = {
-  center: new LatLng(51.454095, -2.595995),
+  center: [51.454095, -2.595995],
   zoom: 16,
   minZoom: 10,
   maxZoom: 20,
@@ -59,14 +49,14 @@ export const Map: FunctionComponent<IMapProps> = ({
 };
 
 interface IPOIMapProps {
-  poiGateway: IPoiGateway;
+  poiGateway: LandmarkGateway;
   markerOptions: IMarkerOptions;
 }
 
 interface IBuildingsState {
   isLoading: boolean;
   error: boolean;
-  points: IPointOfInterest[];
+  points: Landmark[];
 }
 
 const POIMap: FunctionComponent<IPOIMapProps> = ({
@@ -131,36 +121,6 @@ const POIMap: FunctionComponent<IPOIMapProps> = ({
     </>
   );
 };
-
-interface BuildingMarkersProps {
-  buildings: IPointOfInterest[];
-}
-
-const BuildingMarkers = ({ buildings }: BuildingMarkersProps): JSX.Element => (
-  <>
-    {buildings.map((building) => (
-      <Marker
-        position={building.geometry.coordinates}
-        key={building.id}
-        alt={"Listed building"}
-        title={building.properties.name}
-        icon={buildingIcon(building)}
-      >
-        <Popup key={building.id} autoClose={false} autoPan={false}>
-          <h2>{building.properties.name}</h2>
-          <h3>Grade {building.properties.grade}</h3>
-          <a
-            href={building.properties.hyperlink}
-            target="_blank"
-            rel="noreferrer"
-          >
-            Check it out
-          </a>
-        </Popup>
-      </Marker>
-    ))}
-  </>
-);
 
 const viewport = (bounds: LatLngBounds): Polygon => {
   return [

@@ -1,10 +1,10 @@
-import React, { FunctionComponent } from "react";
+import { FunctionComponent } from "react";
 import { MapContainerProps } from "react-leaflet";
 import { FullscreenControl } from "./components/controls/FullscreenControl";
 import { LocateControl } from "./components/controls/LocateControl";
 import { SearchControl } from "./components/controls/SearchControl";
 import { IMarkerOptions, Map } from "./components/Map";
-import { BuildingsGateway } from "./lib/gateways/BuildingsGateway";
+import { ApiLandmarkGateway } from "./lib/gateways/ApiLandmarkGateway";
 
 const App: FunctionComponent = (): JSX.Element => {
   const mapOptions: MapContainerProps = {
@@ -21,7 +21,7 @@ const App: FunctionComponent = (): JSX.Element => {
 
   return (
     <Map
-      poiGateway={new BuildingsGateway()}
+      poiGateway={new ApiLandmarkGateway()}
       mapOptions={mapOptions}
       markerOptions={markerOptions}
     >

@@ -1,31 +1,28 @@
-import L from "leaflet";
-import {
-  BuildingGrades,
-  IPointOfInterest,
-} from "../../lib/entities/IPointOfInterest";
+import * as L from "leaflet";
+import { BuildingGrades, Landmark } from "../../lib/entities/Landmark";
 
-export const gradeIBuildingIcon = new L.Icon({
+const gradeIBuildingIcon = new L.Icon({
   iconUrl: "icons/building-grade-i.png",
   iconRetinaUrl: "icons/building-grade-i.png",
   iconSize: [48, 48],
   popupAnchor: [0, -20],
 });
 
-export const gradeIIStarBuildingIcon = new L.Icon({
+const gradeIIStarBuildingIcon = new L.Icon({
   iconUrl: "icons/building-grade-ii*.png",
   iconRetinaUrl: "icons/building-grade-ii*.png",
   iconSize: [32, 32],
   popupAnchor: [0, -20],
 });
 
-export const gradeIIBuildingIcon = new L.Icon({
+const gradeIIBuildingIcon = new L.Icon({
   iconUrl: "icons/building-grade-ii.png",
   iconRetinaUrl: "icons/building-grade-ii.png",
   iconSize: [24, 24],
   popupAnchor: [0, -20],
 });
 
-export const buildingIcon = (building: IPointOfInterest) => {
+export const buildingIcon = (building: Landmark) => {
   switch (building.properties.grade) {
     case BuildingGrades.one:
       return gradeIBuildingIcon;
