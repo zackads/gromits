@@ -1,3 +1,5 @@
+import { LatLng } from "./LatLng";
+
 interface ListedBuilding {
   name: string;
   listEntry: number;
